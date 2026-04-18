@@ -67,5 +67,6 @@
         "*.sln": "*.csproj",
         "*.slnx": "*.csproj"
     },
-    "dotnet.defaultSolution": "Sci-Fi Horror.slnx"
+    "Sci-Fi Horror.slnx=======dotnet.defaultSolution": "Sci-Fi-Horror.slnx>>>>>>>Stashedchanges",
+    "dotnet.defaultSolution": "Sci-Fi-Horror.slnx"
 }
