@@ -94,32 +94,48 @@ public class VisitorController : MonoBehaviour
         if (anim != null) anim.SetBool("Walking", true);
     }
 
-    private void Update()
+private void Update()
+{
+    if (!walking) return;
+
+    Transform target = walkTarget != null ? walkTarget : player;
+    if (target == null) return;
+
+    Vector3 direction = target.position - transform.position;
+    direction.y = 0f;
+
+    if (direction.sqrMagnitude > 0.01f)
     {
-        if (!walking) return;
+        Vector3 dirNormalized = direction.normalized;
 
-        Transform target = walkTarget != null ? walkTarget : player;
-        if (target == null) return;
+        // How aligned is she with the target? 1 = facing target, -1 = facing opposite.
+        float alignment = Vector3.Dot(transform.forward, dirNormalized);
 
-        Vector3 direction = target.position - transform.position;
-        direction.y = 0f;
+        // Rotate faster when the player is behind her, slower when in front.
+        // alignment of -1 (player directly behind) → rotateSpeed = 4
+        // alignment of 1 (player directly in front) → rotateSpeed = 1.2
+        float rotateSpeed = Mathf.Lerp(4f, 1.2f, (alignment + 1f) * 0.5f);
 
-        if (direction.sqrMagnitude > 0.01f)
+        Quaternion lookRot = Quaternion.LookRotation(dirNormalized);
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, Time.deltaTime * rotateSpeed);
+
+        // Only translate forward if she's reasonably aligned with the target.
+        // Below ~30° off, she walks. Beyond that, she just turns.
+        // This prevents the "feet sliding while spinning" bug.
+        if (alignment > 0.5f)
         {
-            Quaternion lookRot = Quaternion.LookRotation(direction.normalized);
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, Time.deltaTime * 3f);
-        }
-
-        transform.position += direction.normalized * walkSpeed * Time.deltaTime;
-
-        // Player caught trigger: only fires when chasing the player (not a fixed target).
-        if (walkTarget == null && direction.magnitude < 1.2f)
-        {
-            walking = false;
-            onPlayerCaught?.Invoke();
+            transform.position += transform.forward * walkSpeed * Time.deltaTime;
         }
     }
 
+    // Player caught trigger: only fires when chasing the player (not a fixed target).
+    if (walkTarget == null && direction.magnitude < 1.2f)
+    {
+        walking = false;
+        if (anim != null) anim.SetBool("Walking", false);
+        onPlayerCaught?.Invoke();
+    }
+}
     private IEnumerator FadeIn()
     {
         if (fadeInDuration <= 0f)
