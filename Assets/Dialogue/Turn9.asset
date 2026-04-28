@@ -32,8 +32,8 @@ MonoBehaviour:
       speakerName: Sophie
       text: What a strange thing to say. I'm right here.
       audioClip: {fileID: 0}
-      displayDuration: 4
-    nextNode: {fileID: 0}
+      displayDuration: 3
+    nextNode: {fileID: 11400000, guid: c565c579a655db147af6c93d672242a2, type: 2}
   - buttonText: 'Nothing. I''m sorry. Come here.
 
 '
@@ -49,7 +49,7 @@ MonoBehaviour:
       text: Then come to me.
       audioClip: {fileID: 0}
       displayDuration: 3
-    nextNode: {fileID: 0}
+    nextNode: {fileID: 11400000, guid: c565c579a655db147af6c93d672242a2, type: 2}
   - buttonText: 'Because if I look at you, I''ll believe it
 
 '
@@ -63,7 +63,7 @@ MonoBehaviour:
       text: Believe what?
       audioClip: {fileID: 0}
       displayDuration: 3
-    nextNode: {fileID: 0}
-  autoAdvanceNode: {fileID: 11400000, guid: c565c579a655db147af6c93d672242a2, type: 2}
+    nextNode: {fileID: 11400000, guid: c565c579a655db147af6c93d672242a2, type: 2}
+  autoAdvanceNode: {fileID: 0}
   isEndNode: 0
   completionEventName: 
