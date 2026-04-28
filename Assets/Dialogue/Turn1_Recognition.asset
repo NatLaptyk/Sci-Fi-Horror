@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd02ae3f5b980f24d8176e342f9aa382, type: 3}
+  m_Name: Turn1_Recognition
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueNode
+  sophieOpeningLines:
+  - speakerName: Sophie
+    text: Adam. There you are.
+    audioClip: {fileID: 8300000, guid: 27e9ecb0c42a03b4e83c43d4d374ea34, type: 3}
+    displayDuration: 3
+  - speakerName: Sophie
+    text: You look like you've seen a ghost. Are you alright?
+    audioClip: {fileID: 8300000, guid: cebb37f089d63ee43824a77158ad0656, type: 3}
+    displayDuration: 3
+  choices:
+  - buttonText: What are you doing here?
+    adamReply:
+      speakerName: Adam
+      text: What are you doing here
+      audioClip: {fileID: 0}
+      displayDuration: 3
+    sophieResponse:
+      speakerName: Sophie
+      text: What do you mean what am I doing here? I was looking for you.
+      audioClip: {fileID: 0}
+      displayDuration: 3
+    nextNode: {fileID: 11400000, guid: 4e5afd88e2ca67d4d81cd0c3374abb98, type: 2}
+  - buttonText: I'm fine. Just tired
+    adamReply:
+      speakerName: Adam
+      text: I'm fine. Just tired.
+      audioClip: {fileID: 0}
+      displayDuration: 3
+    sophieResponse:
+      speakerName: Sophie
+      text: You don't look fine. I was looking for you.
+      audioClip: {fileID: 0}
+      displayDuration: 3
+    nextNode: {fileID: 11400000, guid: 4e5afd88e2ca67d4d81cd0c3374abb98, type: 2}
+  - buttonText: "What\u2026"
+    adamReply:
+      speakerName: Adam
+      text: "What\u2026"
+      audioClip: {fileID: 0}
+      displayDuration: 3
+    sophieResponse:
+      speakerName: Sophie
+      text: I was looking for you. You said you'd come.
+      audioClip: {fileID: 0}
+      displayDuration: 3
+    nextNode: {fileID: 11400000, guid: 4e5afd88e2ca67d4d81cd0c3374abb98, type: 2}
+  autoAdvanceNode: {fileID: 0}
+  isEndNode: 0
+  completionEventName: 
