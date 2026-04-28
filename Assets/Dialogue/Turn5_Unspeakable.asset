@@ -12,8 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd02ae3f5b980f24d8176e342f9aa382, type: 3}
   m_Name: Turn5_Unspeakable
   m_EditorClassIdentifier: Assembly-CSharp::DialogueNode
-  sophieOpeningLines: []
+  sophieOpeningLines:
+  - speakerName: Sophie
+    text: "I told you this place needs more light. You know that dark spaces make
+      me depressed and sluggish. \nIt\u2019s like that apartment on 21st Street,
+      remember? The one with the broken radiator? You said the radiator sounded like
+      someone was alive in the wall."
+    audioClip: {fileID: 0}
+    displayDuration: 6
   choices: []
-  autoAdvanceNode: {fileID: 0}
+  autoAdvanceNode: {fileID: 11400000, guid: 8baa6667a36e7344a88707e63e5e0457, type: 2}
   isEndNode: 0
   completionEventName: 

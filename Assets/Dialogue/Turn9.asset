@@ -10,51 +10,60 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fd02ae3f5b980f24d8176e342f9aa382, type: 3}
-  m_Name: Turn2_FirstCrack
+  m_Name: Turn9
   m_EditorClassIdentifier: Assembly-CSharp::DialogueNode
   sophieOpeningLines:
   - speakerName: Sophie
-    text: I waited at the lab for ages. You said you'd come.
+    text: Adam, what's wrong with you tonight? Why won't you look at me?
     audioClip: {fileID: 0}
     displayDuration: 3
   choices:
-  - buttonText: This isn't possible.
+  - buttonText: 'Because you''re dead.
+
+'
     adamReply:
       speakerName: Adam
-      text: This isn't possible.
+      text: 'Because you''re dead.
+
+'
       audioClip: {fileID: 0}
       displayDuration: 3
     sophieResponse:
       speakerName: Sophie
-      text: What isn't? Adam, you're scaring me. Why are you looking at me like that?
+      text: What a strange thing to say. I'm right here.
       audioClip: {fileID: 0}
-      displayDuration: 3
-    nextNode: {fileID: 11400000, guid: e0eb758fc3783b442baf5f13f95d161e, type: 2}
-  - buttonText: I'm sorry. I lost track of time.
+      displayDuration: 4
+    nextNode: {fileID: 0}
+  - buttonText: 'Nothing. I''m sorry. Come here.
+
+'
     adamReply:
       speakerName: Adam
-      text: I'm sorry. I lost track of time.
+      text: 'Nothing. I''m sorry. Come here.
+
+'
       audioClip: {fileID: 0}
       displayDuration: 3
     sophieResponse:
       speakerName: Sophie
-      text: It's okay. You always lose track of time when you work. Why are you looking
-        at me like that?
+      text: Then come to me.
       audioClip: {fileID: 0}
       displayDuration: 3
-    nextNode: {fileID: 11400000, guid: e0eb758fc3783b442baf5f13f95d161e, type: 2}
-  - buttonText: How long were you waiting?
+    nextNode: {fileID: 0}
+  - buttonText: 'Because if I look at you, I''ll believe it
+
+'
     adamReply:
       speakerName: Adam
-      text: How long were you waiting?
+      text: Because if I look at you, I'll believe it
       audioClip: {fileID: 0}
       displayDuration: 3
     sophieResponse:
       speakerName: Sophie
-      text: I don't know. A while. Why are you looking at me like that?
+      text: Believe what?
       audioClip: {fileID: 0}
       displayDuration: 3
-    nextNode: {fileID: 11400000, guid: e0eb758fc3783b442baf5f13f95d161e, type: 2}
-  autoAdvanceNode: {fileID: 0}
+    nextNode: {fileID: 0}
+  autoAdvanceNode: {fileID: 11400000, guid: c565c579a655db147af6c93d672242a2, type: 2}
   isEndNode: 0
   completionEventName: 

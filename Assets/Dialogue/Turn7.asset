@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fd02ae3f5b980f24d8176e342f9aa382, type: 3}
-  m_Name: Turn6_Forgiveness
+  m_Name: Turn7
   m_EditorClassIdentifier: Assembly-CSharp::DialogueNode
   sophieOpeningLines:
-  - speakerName: Adam
-    text: I never told anyone that.
+  - speakerName: Sophie
+    text: You told me.
     audioClip: {fileID: 0}
     displayDuration: 3
   choices: []
-  autoAdvanceNode: {fileID: 11400000, guid: 9fbeff99a1fd9b945ae39676e654f224, type: 2}
+  autoAdvanceNode: {fileID: 11400000, guid: 2d9c50ae21fc95d4ea013c61a3c2d2e6, type: 2}
   isEndNode: 0
   completionEventName: 
