@@ -14,10 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DialogueNode
   sophieOpeningLines:
   - speakerName: Sophie
-    text: Adam. There you are.
-    audioClip: {fileID: 8300000, guid: 27e9ecb0c42a03b4e83c43d4d374ea34, type: 3}
-    displayDuration: 3
-  - speakerName: Sophie
     text: You look like you've seen a ghost. Are you alright?
     audioClip: {fileID: 8300000, guid: cebb37f089d63ee43824a77158ad0656, type: 3}
     displayDuration: 3
@@ -60,4 +56,4 @@ MonoBehaviour:
     nextNode: {fileID: 11400000, guid: 4e5afd88e2ca67d4d81cd0c3374abb98, type: 2}
   autoAdvanceNode: {fileID: 0}
   isEndNode: 0
-  completionEventName: 
+  completionEventName: SophieSitsTalking

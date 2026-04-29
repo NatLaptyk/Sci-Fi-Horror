@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd02ae3f5b980f24d8176e342f9aa382, type: 3}
+  m_Name: Turn0_Greeting
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueNode
+  sophieOpeningLines:
+  - speakerName: Sophie
+    text: Adam. There you are.
+    audioClip: {fileID: 8300000, guid: 27e9ecb0c42a03b4e83c43d4d374ea34, type: 3}
+    displayDuration: 3
+  choices: []
+  autoAdvanceNode: {fileID: 11400000, guid: 89cfb7a8ebc00194bbde84980c935ce3, type: 2}
+  isEndNode: 0
+  completionEventName: SophieSitsUp

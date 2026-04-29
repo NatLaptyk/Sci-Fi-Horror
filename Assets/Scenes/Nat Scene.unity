@@ -25065,7 +25065,7 @@ MonoBehaviour:
         m_MethodName: StartDialogue
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 11400000, guid: 89cfb7a8ebc00194bbde84980c935ce3, type: 2}
+          m_ObjectArgument: {fileID: 11400000, guid: 15d8658dc5f2b2848900bbc670ff39a0, type: 2}
           m_ObjectArgumentAssemblyTypeName: DialogueNode, Assembly-CSharp
           m_IntArgument: 0
           m_FloatArgument: 0
@@ -92881,6 +92881,55 @@ CapsuleCollider:
   m_Height: 1.900537
   m_Direction: 0
   m_Center: {x: -0.060863376, y: 0, z: 0}
+--- !u!114 &627671196
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 627671187}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc994649365aa0b4a9b1f12c6cd73f80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HeadTracker
+  headBone: {fileID: 1725209865}
+  animator: {fileID: 627671188}
+  target: {fileID: 1439867654}
+  trackSpeed: 4
+  maxYawOffset: 180
+  maxPitchOffset: 30
+  spinDuration: 3
+  spinCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spinDirection: 1
+  audioSource: {fileID: 0}
+  turn360Sound: {fileID: 0}
+  onSpinComplete:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &628559914
 GameObject:
   m_ObjectHideFlags: 0
@@ -211923,8 +211972,64 @@ MonoBehaviour:
       m_Calls: []
   onDialogueEnded:
     m_PersistentCalls:
-      m_Calls: []
-  namedCompletionEvents: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  namedCompletionEvents:
+  - eventName: SophieSitsUp
+    action:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 627671188}
+          m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_MethodName: SetTrigger
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: SitUp
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventName: SegmentA_Complete
+    action:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 627671188}
+          m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_MethodName: SetTrigger
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: StandUp
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 627671196}
+          m_TargetAssemblyTypeName: HeadTracker, Assembly-CSharp
+          m_MethodName: TrackPlayer
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1001 &1532814324
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -220217,7 +220322,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7521740185679601469, guid: 9ce165dd222504a7dada2f13901e2cbd, type: 3}
       propertyPath: m_Name
-      value: Door_Airlock
+      value: Door_Airlock_Sophie
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -220229,6 +220334,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7521740185679601469, guid: 9ce165dd222504a7dada2f13901e2cbd, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1583623283}
+    - targetCorrespondingSourceObject: {fileID: 7521740185679601469, guid: 9ce165dd222504a7dada2f13901e2cbd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1583623290}
     - targetCorrespondingSourceObject: {fileID: 5570434288494733707, guid: 9ce165dd222504a7dada2f13901e2cbd, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1583623282}
@@ -220328,6 +220436,47 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   onLockedAttempt:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &1583623290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1583623281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee5604fd327b5694c9162becc2985654, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DoorShaker
+  audioSource: {fileID: 0}
+  stage1Clips: []
+  stage2Clips: []
+  stage3Clips: []
+  stage1Shake: 0.005
+  stage2Shake: 0.02
+  stage3Shake: 0.06
+  stage1Duration: 4
+  stage2Duration: 3
+  stage3Duration: 2.5
+  stage1HitInterval: 0.7
+  stage2HitInterval: 0.5
+  dentVisuals: []
+  voiceSource: {fileID: 0}
+  stage1Voice: {fileID: 0}
+  stage2Voice: {fileID: 0}
+  stage3VoiceClips: []
+  onStage1Start:
+    m_PersistentCalls:
+      m_Calls: []
+  onStage2Start:
+    m_PersistentCalls:
+      m_Calls: []
+  onStage3Start:
+    m_PersistentCalls:
+      m_Calls: []
+  onSequenceComplete:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &1583879654 stripped
@@ -226506,6 +226655,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 609f9f6b557908146a652edc4e69e6a5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 627671190}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 609f9f6b557908146a652edc4e69e6a5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 627671196}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 609f9f6b557908146a652edc4e69e6a5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 627671192}
@@ -238905,6 +239057,11 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
+--- !u!4 &1725209865 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -3321919801592875672, guid: 609f9f6b557908146a652edc4e69e6a5, type: 3}
+  m_PrefabInstance: {fileID: 1617716286}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1725371540
 PrefabInstance:
   m_ObjectHideFlags: 0
