@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd02ae3f5b980f24d8176e342f9aa382, type: 3}
+  m_Name: Turn2_FirstCrack
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueNode
+  sophieOpeningLines:
+  - speakerName: Sophie
+    text: I waited at the lab for ages. You said you'd come.
+    audioClip: {fileID: 8300000, guid: ce1aab2d6d84d00478615cfce776574e, type: 3}
+    displayDuration: 3
+  choices:
+  - buttonText: This isn't possible.
+    adamReply:
+      speakerName: Adam
+      text: This isn't possible.
+      audioClip: {fileID: 8300000, guid: e43175fc9cb88154d867e761a9abe7d6, type: 3}
+      displayDuration: 3
+    sophieResponse:
+      speakerName: Sophie
+      text: What isn't? Adam, you're scaring me. Why are you looking at me like that?
+      audioClip: {fileID: 8300000, guid: 738f9dc09981e2c4fa5a580b1d85ee91, type: 3}
+      displayDuration: 3
+    nextNode: {fileID: 11400000, guid: e0eb758fc3783b442baf5f13f95d161e, type: 2}
+  - buttonText: I'm sorry. I lost track of time.
+    adamReply:
+      speakerName: Adam
+      text: I'm sorry. I lost track of time.
+      audioClip: {fileID: 8300000, guid: 211fdc89af061b549b74cd40b6c904d3, type: 3}
+      displayDuration: 3
+    sophieResponse:
+      speakerName: Sophie
+      text: It's okay. You always lose track of time when you work. Why are you looking
+        at me like that?
+      audioClip: {fileID: 8300000, guid: 44ca4c5383a127e4ebfecd2eb2aeffdb, type: 3}
+      displayDuration: 3
+    nextNode: {fileID: 11400000, guid: e0eb758fc3783b442baf5f13f95d161e, type: 2}
+  - buttonText: How long were you waiting?
+    adamReply:
+      speakerName: Adam
+      text: How long were you waiting?
+      audioClip: {fileID: 8300000, guid: 72388b43f2e17174e860e8809db5c2c4, type: 3}
+      displayDuration: 3
+    sophieResponse:
+      speakerName: Sophie
+      text: I don't know. A while. Why are you looking at me like that?
+      audioClip: {fileID: 8300000, guid: 6079d75e2d085d945a4128bff7747069, type: 3}
+      displayDuration: 3
+    nextNode: {fileID: 11400000, guid: e0eb758fc3783b442baf5f13f95d161e, type: 2}
+  autoAdvanceNode: {fileID: 0}
+  isEndNode: 0
+  completionEventName: 

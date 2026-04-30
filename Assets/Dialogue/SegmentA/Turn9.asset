@@ -1,0 +1,73 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd02ae3f5b980f24d8176e342f9aa382, type: 3}
+  m_Name: Turn9
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueNode
+  sophieOpeningLines:
+  - speakerName: Sophie
+    text: Adam, what's wrong with you tonight? Why won't you look at me?
+    audioClip: {fileID: 8300000, guid: ea88fbc0cc289c941bbebdf36d67cdf0, type: 3}
+    displayDuration: 3
+  choices:
+  - buttonText: 'Because you''re dead.
+
+'
+    adamReply:
+      speakerName: Adam
+      text: 'Because you''re dead.
+
+'
+      audioClip: {fileID: 8300000, guid: 165998bd17d53674083e397b8d1b81d7, type: 3}
+      displayDuration: 3
+    sophieResponse:
+      speakerName: Sophie
+      text: What a strange thing to say. I'm right here.
+      audioClip: {fileID: 8300000, guid: 6a0e19da14371db4db4abb7eb55814c6, type: 3}
+      displayDuration: 3
+    nextNode: {fileID: 11400000, guid: c565c579a655db147af6c93d672242a2, type: 2}
+  - buttonText: 'Nothing. I''m sorry. Come here.
+
+'
+    adamReply:
+      speakerName: Adam
+      text: 'Nothing. I''m sorry. Come here.
+
+        Come here. I want to be close
+        to you.
+
+'
+      audioClip: {fileID: 8300000, guid: 505417e5cd149014fa7a87851ded6f0f, type: 3}
+      displayDuration: 3
+    sophieResponse:
+      speakerName: Sophie
+      text: No, please come to me.
+      audioClip: {fileID: 0}
+      displayDuration: 3
+    nextNode: {fileID: 11400000, guid: c565c579a655db147af6c93d672242a2, type: 2}
+  - buttonText: 'Because if I look at you, I''ll believe it
+
+'
+    adamReply:
+      speakerName: Adam
+      text: 'Because if I look at you, I won''t be able to stop myself from believing
+        this right now. '
+      audioClip: {fileID: 8300000, guid: 40e20a4715cbf0d48864402433df3fcd, type: 3}
+      displayDuration: 3
+    sophieResponse:
+      speakerName: Sophie
+      text: Believe what?
+      audioClip: {fileID: 8300000, guid: c8a8b669f3787d1469a69d0899682f15, type: 3}
+      displayDuration: 3
+    nextNode: {fileID: 11400000, guid: c565c579a655db147af6c93d672242a2, type: 2}
+  autoAdvanceNode: {fileID: 0}
+  isEndNode: 0
+  completionEventName: 

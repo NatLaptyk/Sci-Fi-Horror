@@ -2,98 +2,88 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
-// Head tracking + 360 spin for humanoid characters.
+// Head tracking + turn-around-and-stare for humanoid characters.
 //
 // IMPORTANT: this version uses Unity's Animator IK system (OnAnimatorIK + SetLookAtPosition)
-// rather than directly setting bone rotations. This is the correct approach for HUMANOID avatars
-// because the Animator overwrites bone rotations every frame and direct manipulation gets
-// fought by the animation system.
+// for natural look-at tracking. Direct bone manipulation is used only for the head-turn effect.
 //
 // SETUP REQUIREMENTS:
-//  1. The character must be a Humanoid avatar (set Rig Type = Humanoid in the FBX import settings).
-//  2. The Animator Controller's Base Layer must have "IK Pass" enabled:
-//     - Open Animator Controller window.
-//     - Click the gear icon next to "Base Layer".
-//     - Check "IK Pass".
-//  3. Attach this script to the same GameObject as the Animator.
-//  4. Drag the Animator into the animator field (auto-found if on same GameObject).
-//  5. Optional: Drag the head bone into headBone field for the Spin360 effect (Spin360 still
-//     uses direct rotation since IK doesn't support arbitrary spins).
-//
-// HOW IT WORKS:
-//  - TrackTarget mode: sets a look-at target in OnAnimatorIK. Unity's IK system smoothly
-//    rotates the head, neck, and slightly the spine to look at the target — much more natural
-//    than manual bone rotation.
-//  - Spin360 mode: directly rotates the head bone in LateUpdate (IK doesn't do 360 spins).
-//    During spin, IK is disabled so it doesn't fight us.
+//  1. The character must be a Humanoid avatar.
+//  2. The Animator Controller's Base Layer must have "IK Pass" enabled.
+//  3. Drag the head bone into headBone field for the head-turn effect.
 
 public class HeadTracker : MonoBehaviour
 {
-    public enum HeadMode { Idle, TrackTarget, Spin360 }
+    public enum HeadMode { Idle, TrackTarget, HeadTurn }
 
     [Header("References")]
     [Tooltip("The Animator on the humanoid character. IK Pass must be enabled on its Base Layer.")]
     [SerializeField] private Animator animator;
 
-    [Tooltip("The head bone Transform. Used ONLY for Spin360 mode. Auto-found by name if left null.")]
+    [Tooltip("The head bone Transform. Used for the head-turn effect. Auto-found by name if left null.")]
     [SerializeField] private Transform headBone;
 
     [Header("Tracking")]
-    [Tooltip("Target the head should look at. Auto-finds Player camera if null.")]
     [SerializeField] private Transform target;
-
-    [Tooltip("How fast the IK look-at weight ramps up when tracking starts. Higher = snappier.")]
     [SerializeField] private float weightRampSpeed = 3f;
 
     [Header("IK Look-At weights (0..1 each)")]
-    [Tooltip("Overall look-at strength. 1 = full strength.")]
     [Range(0f, 1f)] [SerializeField] private float lookAtMaxWeight = 1f;
-
-    [Tooltip("How much the body twists toward the target. 0 = body stays still, 1 = full twist.")]
     [Range(0f, 1f)] [SerializeField] private float bodyWeight = 0.1f;
-
-    [Tooltip("How much the head rotates toward the target. Usually high.")]
     [Range(0f, 1f)] [SerializeField] private float headWeight = 1f;
-
-    [Tooltip("How much the eyes rotate toward the target. Only works if avatar has eye bones.")]
     [Range(0f, 1f)] [SerializeField] private float eyesWeight = 0.5f;
-
-    [Tooltip("Limits how far the look can deviate from forward. 0 = unlimited, 0.5 = roughly 90 degrees, 1 = forward only.")]
     [Range(0f, 1f)] [SerializeField] private float clampWeight = 0.4f;
 
-    [Header("360 Spin")]
-    [Tooltip("How long the full 360 spin takes, in seconds.")]
-    [SerializeField] private float spinDuration = 3f;
+    [Header("Head Turn Behavior")]
+    [Tooltip("How far to rotate the head, in degrees. 180 = look directly backward.")]
+    [SerializeField] private float headTurnAngle = 180f;
 
-    [Tooltip("Curve controlling the spin's easing.")]
-    [SerializeField] private AnimationCurve spinCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
+    [Tooltip("Direction. 1 = clockwise, -1 = counter-clockwise.")]
+    [SerializeField] private float turnDirection = 1f;
 
-    [Tooltip("Direction of the 360. 1 = clockwise, -1 = counter-clockwise.")]
-    [SerializeField] private float spinDirection = 1f;
+    [Tooltip("Time to rotate from forward to facing-backward.")]
+    [SerializeField] private float turnOutDuration = 1.5f;
+
+    [Tooltip("Time to hold the staring-backward pose. The horror beat.")]
+    [SerializeField] private float stareDuration = 4f;
+
+    [Tooltip("Time to rotate back to forward. Set to 0 if you don't want the head to return.")]
+    [SerializeField] private float turnBackDuration = 1f;
+
+    [Tooltip("Easing curve. Default is ease-in-out, which feels mechanical and wrong.")]
+    [SerializeField] private AnimationCurve turnCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
 
     [Header("Audio")]
     [SerializeField] private AudioSource audioSource;
-    [SerializeField] private AudioClip turn360Sound;
+    [Tooltip("Played when the turn-out begins. A neck crack or wet snap.")]
+    [SerializeField] private AudioClip turnOutSound;
+
+    [Tooltip("Played when the head returns to forward. Optional.")]
+    [SerializeField] private AudioClip turnBackSound;
 
     [Header("Events")]
-    [SerializeField] private UnityEvent onSpinComplete;
+    [Tooltip("Fires once the head reaches the staring-back position (start of the stare).")]
+    [SerializeField] private UnityEvent onStareReached;
+
+    [Tooltip("Fires after stareDuration ends (start of the return motion).")]
+    [SerializeField] private UnityEvent onStareEnded;
+
+    [Tooltip("Fires when the entire turn sequence (out + stare + return) is complete.")]
+    [SerializeField] private UnityEvent onTurnSequenceComplete;
 
     // Internal state.
     private HeadMode currentMode = HeadMode.Idle;
     private float currentLookWeight = 0f;
-    private float currentSpinAngle = 0f;
-    private Quaternion spinRestRotation;
-    private bool spinRestCaptured = false;
+    private float currentTurnAngle = 0f;
+    private Quaternion turnRestRotation;
+    private bool turnRestCaptured = false;
 
     private void Awake()
     {
         if (animator == null) animator = GetComponent<Animator>();
         if (animator == null) animator = GetComponentInChildren<Animator>();
 
-        if (headBone == null)
-        {
-            headBone = FindHeadBone(transform);
-        }
+        if (headBone == null) headBone = FindHeadBone(transform);
 
         if (target == null)
         {
@@ -104,11 +94,6 @@ public class HeadTracker : MonoBehaviour
                 if (cam == null) cam = Camera.main;
                 target = cam != null ? cam.transform : p.transform;
             }
-        }
-
-        if (animator == null)
-        {
-            Debug.LogWarning("HeadTracker: Animator not found.");
         }
     }
 
@@ -128,7 +113,7 @@ public class HeadTracker : MonoBehaviour
     // Public API.
     public void TrackPlayer()
     {
-        Debug.Log("HeadTracker: TrackPlayer called. Target: " + (target != null ? target.name : "NULL"));
+        Debug.Log("HeadTracker: TrackPlayer called.");
         currentMode = HeadMode.TrackTarget;
     }
 
@@ -138,59 +123,88 @@ public class HeadTracker : MonoBehaviour
         currentMode = HeadMode.Idle;
     }
 
-    // Kept for backwards compatibility with existing wiring. The IK approach doesn't need
-    // a captured rest pose because Unity's IK system handles blending with the current animation.
     public void RecaptureRestPose()
     {
-        Debug.Log("HeadTracker: RecaptureRestPose called (no-op in IK mode, but kept for compatibility).");
+        // No-op in IK mode. Kept for backwards compatibility.
     }
 
-    public void StartSpin360()
+    // Begin the turn-out → stare → return sequence.
+    public void StartHeadTurn()
     {
-        Debug.Log("HeadTracker: StartSpin360 called.");
-        if (currentMode == HeadMode.Spin360) return;
+        Debug.Log("HeadTracker: StartHeadTurn called.");
+        if (currentMode == HeadMode.HeadTurn) return;
         if (headBone == null)
         {
-            Debug.LogWarning("HeadTracker: cannot Spin360 without a head bone reference.");
+            Debug.LogWarning("HeadTracker: cannot turn head without a head bone reference.");
             return;
         }
-        spinRestRotation = headBone.localRotation;
-        spinRestCaptured = true;
-        currentSpinAngle = 0f;
-        currentMode = HeadMode.Spin360;
-        StartCoroutine(SpinRoutine());
+        turnRestRotation = headBone.localRotation;
+        turnRestCaptured = true;
+        currentTurnAngle = 0f;
+        currentMode = HeadMode.HeadTurn;
+        StartCoroutine(HeadTurnRoutine());
     }
 
-    private IEnumerator SpinRoutine()
+    // Backwards-compatible alias for any existing wiring that calls StartSpin360.
+    public void StartSpin360()
     {
-        if (audioSource != null && turn360Sound != null)
+        StartHeadTurn();
+    }
+
+    private IEnumerator HeadTurnRoutine()
+    {
+        // Phase 1: rotate from forward to backward.
+        if (audioSource != null && turnOutSound != null)
         {
-            audioSource.PlayOneShot(turn360Sound);
+            audioSource.PlayOneShot(turnOutSound);
         }
 
+        float targetAngle = headTurnAngle * turnDirection;
         float elapsed = 0f;
-        while (elapsed < spinDuration)
+        while (elapsed < turnOutDuration)
         {
             elapsed += Time.deltaTime;
-            float k = spinCurve.Evaluate(elapsed / spinDuration);
-            currentSpinAngle = 360f * k * spinDirection;
+            float k = turnCurve.Evaluate(elapsed / turnOutDuration);
+            currentTurnAngle = targetAngle * k;
             yield return null;
         }
+        currentTurnAngle = targetAngle;
 
-        currentSpinAngle = 360f * spinDirection;
-        yield return null;
-        currentSpinAngle = 0f;
+        // Phase 2: hold the stare. THIS is the horror moment.
+        onStareReached?.Invoke();
+        yield return new WaitForSeconds(stareDuration);
+        onStareEnded?.Invoke();
+
+        // Phase 3: rotate back to forward (or stay if turnBackDuration is 0).
+        if (turnBackDuration > 0f)
+        {
+            if (audioSource != null && turnBackSound != null)
+            {
+                audioSource.PlayOneShot(turnBackSound);
+            }
+
+            float startAngle = currentTurnAngle;
+            elapsed = 0f;
+            while (elapsed < turnBackDuration)
+            {
+                elapsed += Time.deltaTime;
+                float k = turnCurve.Evaluate(elapsed / turnBackDuration);
+                currentTurnAngle = Mathf.Lerp(startAngle, 0f, k);
+                yield return null;
+            }
+            currentTurnAngle = 0f;
+        }
+
         currentMode = HeadMode.Idle;
-        onSpinComplete?.Invoke();
+        onTurnSequenceComplete?.Invoke();
     }
 
-    // Called by Unity automatically when IK Pass is enabled on the Animator's Base Layer.
-    // This is the correct hook for humanoid IK overrides.
+    // Called by Unity when IK Pass is enabled on the Animator's Base Layer.
     private void OnAnimatorIK(int layerIndex)
     {
         if (animator == null) return;
 
-        // Smoothly ramp the weight up/down based on whether we're tracking.
+        // Disable IK during head turn so it doesn't fight the manual rotation.
         float targetWeight = (currentMode == HeadMode.TrackTarget && target != null) ? lookAtMaxWeight : 0f;
         currentLookWeight = Mathf.MoveTowards(currentLookWeight, targetWeight, weightRampSpeed * Time.deltaTime);
 
@@ -201,13 +215,12 @@ public class HeadTracker : MonoBehaviour
         }
     }
 
-    // Spin360 still uses direct bone rotation since IK doesn't do arbitrary spins.
-    // This runs in LateUpdate AFTER the Animator and IK pass.
+    // Head-turn rotation runs in LateUpdate, after the Animator and IK pass.
     private void LateUpdate()
     {
-        if (currentMode == HeadMode.Spin360 && headBone != null && spinRestCaptured)
+        if (currentMode == HeadMode.HeadTurn && headBone != null && turnRestCaptured)
         {
-            headBone.localRotation = spinRestRotation * Quaternion.Euler(0f, currentSpinAngle, 0f);
+            headBone.localRotation = turnRestRotation * Quaternion.Euler(0f, currentTurnAngle, 0f);
         }
     }
 }

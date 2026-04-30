@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd02ae3f5b980f24d8176e342f9aa382, type: 3}
+  m_Name: D_Turn_1
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueNode
+  sophieOpeningLines:
+  - speakerName: Sophie
+    text: "No, don\u2019t leave me alone! I can\u2019t be alone without you! Please,
+      you must be around, I need to see you, please! Stay with me! "
+    audioClip: {fileID: 8300000, guid: c63b60e1d45a7524c9cc610ccd8fb282, type: 3}
+    displayDuration: 8
+  - speakerName: Sophie
+    text: "No, please! I can\u2019t bear being without you! Please, come back! I
+      need you, please! Stay! "
+    audioClip: {fileID: 8300000, guid: 7188c1fd58f62d14e9776fc2604b5b13, type: 3}
+    displayDuration: 5
+  choices: []
+  autoAdvanceNode: {fileID: 0}
+  isEndNode: 0
+  completionEventName: 

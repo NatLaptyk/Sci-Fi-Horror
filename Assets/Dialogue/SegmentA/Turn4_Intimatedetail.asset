@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd02ae3f5b980f24d8176e342f9aa382, type: 3}
+  m_Name: Turn4_Intimatedetail
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueNode
+  sophieOpeningLines:
+  - speakerName: Sophie
+    text: ' I was just here. I''ve been here.'
+    audioClip: {fileID: 8300000, guid: fd05c5bcc21e3554e93598a5dc740189, type: 3}
+    displayDuration: 3
+  choices:
+  - buttonText: You haven't. You weren't here.
+    adamReply:
+      speakerName: Adam
+      text: You haven't. You weren't here, Sophie. This can't be right. No!
+      audioClip: {fileID: 8300000, guid: 10745b5842a352f4da69e4dc9ae40e84, type: 3}
+      displayDuration: 3
+    sophieResponse:
+      speakerName: Sophie
+      text: Don't be like this. Please.
+      audioClip: {fileID: 8300000, guid: 458f5d8b1c7707648ab2fa755356f6db, type: 3}
+      displayDuration: 3
+    nextNode: {fileID: 11400000, guid: 790a125caa837ee40be5c4ed44a0c8eb, type: 2}
+  - buttonText: Of course. I'm sorry. I'm just confused.
+    adamReply:
+      speakerName: Adam
+      text: Of course. I'm sorry. I'm just so confused.
+      audioClip: {fileID: 8300000, guid: cdd59f3ae979c3941ab2b997401d2dd8, type: 3}
+      displayDuration: 3
+    sophieResponse:
+      speakerName: Sophie
+      text: It's okay. You're just tired.
+      audioClip: {fileID: 8300000, guid: 2a6aaa83ba3b25548b3a8b2fc2fa19eb, type: 3}
+      displayDuration: 3
+    nextNode: {fileID: 11400000, guid: 790a125caa837ee40be5c4ed44a0c8eb, type: 2}
+  - buttonText: I want to believe you.
+    adamReply:
+      speakerName: Adam
+      text: I want to believe you.
+      audioClip: {fileID: 8300000, guid: 827a10994982ae843a8db4dc489dedcd, type: 3}
+      displayDuration: 3
+    sophieResponse:
+      speakerName: Sophie
+      text: What makes you not believe me? It's me.
+      audioClip: {fileID: 8300000, guid: 8db2f57ed56305d4bb3a50dbe0221614, type: 3}
+      displayDuration: 3
+    nextNode: {fileID: 11400000, guid: 790a125caa837ee40be5c4ed44a0c8eb, type: 2}
+  autoAdvanceNode: {fileID: 0}
+  isEndNode: 0
+  completionEventName: 

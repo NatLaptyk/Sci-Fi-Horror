@@ -8,6 +8,10 @@ using UnityEngine.Events;
 // picks a choice from 3 buttons (or auto-advances if no choices), Adam replies,
 // Sophie responds, advance to next node.
 //
+// Two ways to start dialogue:
+//  - StartDialogue(node) — locks player movement (cinematic mode).
+//  - StartDialogueFreeMovement(node) — leaves player free to walk around.
+//
 // Setup:
 //  1. Create an empty GameObject named "DialogueManager".
 //  2. Attach this script.
@@ -49,6 +53,7 @@ public class DialogueManager : MonoBehaviour
 
     private DialogueNode currentNode;
     private bool isRunning = false;
+    private bool currentRunLocksPlayer = true;
     private Coroutine activeRoutine;
 
     [System.Serializable]
@@ -73,8 +78,20 @@ public class DialogueManager : MonoBehaviour
         voiceSource.loop = false;
     }
 
-    // Call from a TriggerZone or anywhere else to begin a dialogue.
+    // Lock player and start dialogue. Use for cinematic moments where the player must stay put.
     public void StartDialogue(DialogueNode startNode)
+    {
+        BeginDialogue(startNode, lockPlayer: true);
+    }
+
+    // Start dialogue WITHOUT locking the player. Use when the player needs to keep walking
+    // (e.g. exploring while Sophie talks, walking behind her during a line).
+    public void StartDialogueFreeMovement(DialogueNode startNode)
+    {
+        BeginDialogue(startNode, lockPlayer: false);
+    }
+
+    private void BeginDialogue(DialogueNode startNode, bool lockPlayer)
     {
         if (isRunning)
         {
@@ -88,7 +105,8 @@ public class DialogueManager : MonoBehaviour
         }
 
         isRunning = true;
-        SetPlayerControlEnabled(false);
+        currentRunLocksPlayer = lockPlayer;
+        if (lockPlayer) SetPlayerControlEnabled(false);
         if (dialogueUI != null) dialogueUI.Show();
         onDialogueStarted?.Invoke();
 
@@ -189,7 +207,6 @@ public class DialogueManager : MonoBehaviour
         {
             voiceSource.clip = line.audioClip;
             voiceSource.Play();
-            // Wait for clip duration (or interruption).
             float t = 0f;
             while (t < line.audioClip.length && voiceSource.isPlaying)
             {
@@ -199,7 +216,6 @@ public class DialogueManager : MonoBehaviour
         }
         else
         {
-            // Subtitle-only fallback.
             yield return new WaitForSeconds(line.displayDuration);
         }
     }
@@ -209,7 +225,8 @@ public class DialogueManager : MonoBehaviour
         isRunning = false;
         currentNode = null;
         if (dialogueUI != null) dialogueUI.Hide();
-        SetPlayerControlEnabled(true);
+        // Only re-enable player controls if this run had locked them.
+        if (currentRunLocksPlayer) SetPlayerControlEnabled(true);
         onDialogueEnded?.Invoke();
     }
 
