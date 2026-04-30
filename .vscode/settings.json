@@ -67,5 +67,5 @@
         "*.sln": "*.csproj",
         "*.slnx": "*.csproj"
     },
-    "dotnet.defaultSolution": "Sci-Fi Horror.slnx"
+    "dotnet.defaultSolution": "Local GitHub.slnx"
 }
