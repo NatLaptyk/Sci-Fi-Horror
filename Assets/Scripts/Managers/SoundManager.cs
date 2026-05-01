@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Audio;
 
 // Singleton sound manager for ambient music and stingers.
 // Based on the pattern from Course 12 slide 6 (Salim's workshop).
@@ -129,4 +130,43 @@ public class SoundManager : MonoBehaviour
         src.volume = 0f;
         src.Stop();
     }
+    public AudioClip GetStingerClip(int id)
+{
+    if (id >= 0 && id < stingerClips.Length)
+        return stingerClips[id];
+    return null;
+}
+
+       public void PlayStingerRightEar(int id)
+    {
+        if (id < 0 || id >= stingerClips.Length) return;
+
+        // 1. FORCE 2D MODE: This makes the sound "global" so panning works perfectly
+        // 0.0 is full 2D, 1.0 is full 3D.
+        stingerSource.spatialBlend = 0.0f; 
+
+        // 3. SCARY PITCH: Lower it for that demonic feel
+        stingerSource.pitch = 0.75f;
+
+        // 4. THE 10X BOOST: Stacking the sound for massive volume
+        for (int i = 0; i < 10; i++)
+        {
+            stingerSource.PlayOneShot(stingerClips[id], 1.0f);
+        }
+
+        // 5. CLEANUP: Reset settings after the sound is done
+        StartCoroutine(ResetScarySettings(stingerClips[id].length));
+    }
+
+    private IEnumerator ResetScarySettings(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        stingerSource.panStereo = 0f;
+        stingerSource.pitch = 1.0f;
+        // Keep spatialBlend at 0 if you want all stingers to be 2D/Global
+    }
+
+
+
+
 }
