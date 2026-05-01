@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
 
 // Main dialogue controller. Singleton.
 //
@@ -12,12 +13,10 @@ using UnityEngine.Events;
 //  - StartDialogue(node) — locks player movement (cinematic mode).
 //  - StartDialogueFreeMovement(node) — leaves player free to walk around.
 //
-// Setup:
-//  1. Create an empty GameObject named "DialogueManager".
-//  2. Attach this script.
-//  3. Add an AudioSource component on the same GameObject (it'll be auto-found).
-//  4. Set up the DialogueUI prefab in your scene and assign it to the dialogueUI field.
-//  5. Call DialogueManager.Instance.StartDialogue(node) from a TriggerZone.
+// Skip controls (development / testing):
+//  - Press skipLineKey to advance past the current spoken line immediately.
+//  - Hold skipDialogueKey to fast-forward the entire dialogue.
+//  - These can be disabled for shipping by setting allowSkip = false.
 
 public class DialogueManager : MonoBehaviour
 {
@@ -28,32 +27,32 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private AudioSource voiceSource;
 
     [Header("Player control")]
-    [Tooltip("Drag in the FirstPersonController GameObject so the dialogue can disable movement.")]
     [SerializeField] private MonoBehaviour playerController;
-
-    [Tooltip("Drag in the camera-look script (StarterAssetsInputs or similar). Optional.")]
     [SerializeField] private MonoBehaviour playerLookController;
 
     [Header("Pacing")]
-    [Tooltip("Delay between Sophie's lines and the choice buttons appearing.")]
     [SerializeField] private float beatBeforeChoices = 0.5f;
-
-    [Tooltip("Delay between the player's choice and Adam's voiced reply.")]
     [SerializeField] private float beatBeforeAdamReply = 0.3f;
 
+    [Header("Skip controls")]
+    [Tooltip("If true, the player can press skipLineKey to advance past the current line. Set false for the shipped game.")]
+    [SerializeField] private bool allowSkip = true;
+
+    [Tooltip("Press this key to skip past the currently playing line.")]
+    [SerializeField] private Key skipLineKey = Key.Space;
+
+    [Tooltip("Hold this key to fast-forward the entire dialogue (skips lines and choice waits).")]
+    [SerializeField] private Key skipDialogueKey = Key.Tab;
+
     [Header("Events")]
-    [Tooltip("Fires when any dialogue starts.")]
     [SerializeField] private UnityEvent onDialogueStarted;
-
-    [Tooltip("Fires when the entire dialogue chain finishes.")]
     [SerializeField] private UnityEvent onDialogueEnded;
-
-    [Tooltip("Fires when a node with a completionEventName matching one of these labels completes.")]
     [SerializeField] private NamedEvent[] namedCompletionEvents;
 
     private DialogueNode currentNode;
     private bool isRunning = false;
     private bool currentRunLocksPlayer = true;
+    private bool skipCurrentLine = false;
     private Coroutine activeRoutine;
 
     [System.Serializable]
@@ -78,14 +77,33 @@ public class DialogueManager : MonoBehaviour
         voiceSource.loop = false;
     }
 
+    private void Update()
+    {
+        if (!isRunning || !allowSkip) return;
+        if (Keyboard.current == null) return;
+
+        // Skip the current line on press.
+        if (Keyboard.current[skipLineKey].wasPressedThisFrame)
+        {
+            skipCurrentLine = true;
+            if (voiceSource.isPlaying) voiceSource.Stop();
+        }
+    }
+
+    private bool IsHoldingFastForward()
+    {
+        if (!allowSkip) return false;
+        if (Keyboard.current == null) return false;
+        return Keyboard.current[skipDialogueKey].isPressed;
+    }
+
     // Lock player and start dialogue. Use for cinematic moments where the player must stay put.
     public void StartDialogue(DialogueNode startNode)
     {
         BeginDialogue(startNode, lockPlayer: true);
     }
 
-    // Start dialogue WITHOUT locking the player. Use when the player needs to keep walking
-    // (e.g. exploring while Sophie talks, walking behind her during a line).
+    // Start dialogue WITHOUT locking the player.
     public void StartDialogueFreeMovement(DialogueNode startNode)
     {
         BeginDialogue(startNode, lockPlayer: false);
@@ -106,6 +124,7 @@ public class DialogueManager : MonoBehaviour
 
         isRunning = true;
         currentRunLocksPlayer = lockPlayer;
+        skipCurrentLine = false;
         if (lockPlayer) SetPlayerControlEnabled(false);
         if (dialogueUI != null) dialogueUI.Show();
         onDialogueStarted?.Invoke();
@@ -124,7 +143,6 @@ public class DialogueManager : MonoBehaviour
     {
         currentNode = node;
 
-        // Play Sophie's opening lines in sequence.
         if (node.sophieOpeningLines != null)
         {
             foreach (DialogueLine line in node.sophieOpeningLines)
@@ -133,25 +151,23 @@ public class DialogueManager : MonoBehaviour
             }
         }
 
-        // Fire the node's named completion event, if any.
         if (!string.IsNullOrEmpty(node.completionEventName))
         {
             FireNamedEvent(node.completionEventName);
         }
 
-        // End if marked as end node.
         if (node.isEndNode)
         {
             EndDialogue();
             yield break;
         }
 
-        // No choices → auto-advance after the opening lines.
         if (node.choices == null || node.choices.Length == 0)
         {
             if (node.autoAdvanceNode != null)
             {
-                yield return new WaitForSeconds(0.4f);
+                float wait = IsHoldingFastForward() ? 0f : 0.4f;
+                if (wait > 0f) yield return new WaitForSeconds(wait);
                 activeRoutine = StartCoroutine(PlayNode(node.autoAdvanceNode));
             }
             else
@@ -161,8 +177,8 @@ public class DialogueManager : MonoBehaviour
             yield break;
         }
 
-        // Show the response buttons and wait for the player to pick.
-        yield return new WaitForSeconds(beatBeforeChoices);
+        float preChoiceWait = IsHoldingFastForward() ? 0f : beatBeforeChoices;
+        if (preChoiceWait > 0f) yield return new WaitForSeconds(preChoiceWait);
 
         DialogueChoice picked = null;
         if (dialogueUI != null)
@@ -176,8 +192,9 @@ public class DialogueManager : MonoBehaviour
             yield break;
         }
 
-        // Play Adam's reply, then Sophie's response.
-        yield return new WaitForSeconds(beatBeforeAdamReply);
+        float preAdamWait = IsHoldingFastForward() ? 0f : beatBeforeAdamReply;
+        if (preAdamWait > 0f) yield return new WaitForSeconds(preAdamWait);
+
         if (picked.adamReply != null && !string.IsNullOrEmpty(picked.adamReply.text))
         {
             yield return StartCoroutine(PlayLine(picked.adamReply));
@@ -188,7 +205,6 @@ public class DialogueManager : MonoBehaviour
             yield return StartCoroutine(PlayLine(picked.sophieResponse));
         }
 
-        // Advance to the next node.
         if (picked.nextNode != null)
         {
             activeRoutine = StartCoroutine(PlayNode(picked.nextNode));
@@ -203,6 +219,8 @@ public class DialogueManager : MonoBehaviour
     {
         if (dialogueUI != null) dialogueUI.ShowLine(line.speakerName, line.text);
 
+        skipCurrentLine = false;
+
         if (line.audioClip != null)
         {
             voiceSource.clip = line.audioClip;
@@ -210,22 +228,36 @@ public class DialogueManager : MonoBehaviour
             float t = 0f;
             while (t < line.audioClip.length && voiceSource.isPlaying)
             {
+                if (skipCurrentLine || IsHoldingFastForward())
+                {
+                    if (voiceSource.isPlaying) voiceSource.Stop();
+                    break;
+                }
                 t += Time.deltaTime;
                 yield return null;
             }
         }
         else
         {
-            yield return new WaitForSeconds(line.displayDuration);
+            float duration = line.displayDuration;
+            float elapsed = 0f;
+            while (elapsed < duration)
+            {
+                if (skipCurrentLine || IsHoldingFastForward()) break;
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
         }
+
+        skipCurrentLine = false;
     }
 
     private void EndDialogue()
     {
         isRunning = false;
         currentNode = null;
+        skipCurrentLine = false;
         if (dialogueUI != null) dialogueUI.Hide();
-        // Only re-enable player controls if this run had locked them.
         if (currentRunLocksPlayer) SetPlayerControlEnabled(true);
         onDialogueEnded?.Invoke();
     }

@@ -16,8 +16,8 @@ MonoBehaviour:
   - speakerName: Sophie
     text: Is everything alright?
     audioClip: {fileID: 8300000, guid: 6df76d5f3de41e747ba336f884c7da95, type: 3}
-    displayDuration: 6
+    displayDuration: 3
   choices: []
   autoAdvanceNode: {fileID: 0}
   isEndNode: 1
-  completionEventName: SegmentC_Complete
+  completionEventName: 

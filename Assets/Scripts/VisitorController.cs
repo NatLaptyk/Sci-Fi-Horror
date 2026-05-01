@@ -2,19 +2,14 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
-// The Visitor — the Colleague from your Solaris design.
-// NOT an AI. All behavior is scripted and triggered from TriggerZones.
+// The Visitor — Sophie. Scripted behavior, no AI.
 //
-// Why scripted instead of NavMesh AI:
-//  - NavMesh debugging will eat your three-week timeline.
-//  - Players cannot tell the difference between a scripted chase and a real one.
-//  - Designer-controlled behavior via trigger zones is more cinematic.
+// Cinematic chase mode: she walks/runs toward the player but cannot catch them.
+// She stops moving when within minDistanceToPlayer of the player so she doesn't
+// embarrassingly walk into them or push them through walls.
 //
-// Setup:
-//  1. Model the Visitor (Mixamo works great) or use a humanoid asset.
-//  2. Place it where it FIRST appears in the scene.
-//  3. Disable the GameObject in the Inspector (starts hidden).
-//  4. Attach this script. Wire TriggerZone events to call Appear, SpeakLine, etc.
+// Wall safety: a forward-facing raycast prevents her from translating into walls.
+// If a wall is in her way, she rotates to face the player but stops moving forward.
 
 public class VisitorController : MonoBehaviour
 {
@@ -23,18 +18,36 @@ public class VisitorController : MonoBehaviour
     [SerializeField] private AudioClip[] voiceLines;
 
     [Header("Movement")]
-    [SerializeField] private float walkSpeed = 1.2f;
-    [Tooltip("Assign manually, or leave null to auto-find Player tag.")]
+    [Tooltip("Walking speed. Match against player walk (~2 m/s) so she's slower than walking.")]
+    [SerializeField] private float walkSpeed = 1.4f;
+
+    [Tooltip("Running speed. Faster than player walk, slower than player sprint (~5 m/s).")]
+    [SerializeField] private float runSpeed = 3f;
+
+    [Tooltip("Auto-finds Player tag if null.")]
     [SerializeField] private Transform player;
 
+    [Header("Cinematic constraints")]
+    [Tooltip("She stops moving when within this distance of the player. Cinematic only \u2014 prevents catching.")]
+    [SerializeField] private float minDistanceToPlayer = 2f;
+
+    [Tooltip("If true, a forward raycast prevents her from clipping into walls.")]
+    [SerializeField] private bool useWallSafety = true;
+
+    [Tooltip("Distance the wall raycast checks. Must be at least 0.5m.")]
+    [SerializeField] private float wallCheckDistance = 0.7f;
+
+    [Tooltip("Layers considered as walls/obstacles for wall safety raycast.")]
+    [SerializeField] private LayerMask wallLayers = ~0; // All layers by default
+
     [Header("Appearance")]
-    [Tooltip("Fade-in duration when Appear() is called. 0 = instant.")]
     [SerializeField] private float fadeInDuration = 0.5f;
 
     [Header("Events")]
     [SerializeField] private UnityEvent onPlayerCaught;
 
-    private bool walking = false;
+    private enum MovementMode { Idle, Walking, Running }
+    private MovementMode mode = MovementMode.Idle;
     private Transform walkTarget;
     private Renderer[] renderers;
     private Animator anim;
@@ -77,65 +90,123 @@ public class VisitorController : MonoBehaviour
 
     public void StartWalkingTowardPlayer()
     {
-        walking = true;
-        if (anim != null) anim.SetBool("Walking", true);
+        Debug.Log("VisitorController: StartWalkingTowardPlayer");
+        mode = MovementMode.Walking;
+        if (anim != null)
+        {
+            anim.SetBool("Walking", true);
+            anim.SetBool("Running", false);
+        }
     }
 
-    public void StopWalking()
+    public void StartRunningTowardPlayer()
     {
-        walking = false;
-        if (anim != null) anim.SetBool("Walking", false);
+        Debug.Log("VisitorController: StartRunningTowardPlayer");
+        mode = MovementMode.Running;
+        if (anim != null)
+        {
+            anim.SetBool("Walking", false);
+            anim.SetBool("Running", true);
+        }
+    }
+
+    public void EscalateToRunning()
+    {
+        Debug.Log("VisitorController: EscalateToRunning");
+        if (mode == MovementMode.Walking || mode == MovementMode.Running)
+        {
+            mode = MovementMode.Running;
+            if (anim != null)
+            {
+                anim.SetBool("Walking", false);
+                anim.SetBool("Running", true);
+            }
+        }
+    }
+
+    public void StopMoving()
+    {
+        Debug.Log("VisitorController: StopMoving");
+        mode = MovementMode.Idle;
+        if (anim != null)
+        {
+            anim.SetBool("Walking", false);
+            anim.SetBool("Running", false);
+        }
     }
 
     public void WalkToTarget(Transform target)
     {
         walkTarget = target;
-        walking = true;
-        if (anim != null) anim.SetBool("Walking", true);
+        StartWalkingTowardPlayer();
     }
 
-private void Update()
-{
-    if (!walking) return;
-
-    Transform target = walkTarget != null ? walkTarget : player;
-    if (target == null) return;
-
-    Vector3 direction = target.position - transform.position;
-    direction.y = 0f;
-
-    if (direction.sqrMagnitude > 0.01f)
+    private void Update()
     {
-        Vector3 dirNormalized = direction.normalized;
+        if (mode == MovementMode.Idle) return;
 
-        // How aligned is she with the target? 1 = facing target, -1 = facing opposite.
-        float alignment = Vector3.Dot(transform.forward, dirNormalized);
+        Transform target = walkTarget != null ? walkTarget : player;
+        if (target == null) return;
 
-        // Rotate faster when the player is behind her, slower when in front.
-        // alignment of -1 (player directly behind) → rotateSpeed = 4
-        // alignment of 1 (player directly in front) → rotateSpeed = 1.2
-        float rotateSpeed = Mathf.Lerp(4f, 1.2f, (alignment + 1f) * 0.5f);
+        Vector3 direction = target.position - transform.position;
+        direction.y = 0f;
+        float distance = direction.magnitude;
 
-        Quaternion lookRot = Quaternion.LookRotation(dirNormalized);
-        transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, Time.deltaTime * rotateSpeed);
+        bool isTranslatingThisFrame = false;
 
-        // Only translate forward if she's reasonably aligned with the target.
-        // Below ~30° off, she walks. Beyond that, she just turns.
-        // This prevents the "feet sliding while spinning" bug.
-        if (alignment > 0.5f)
+        if (direction.sqrMagnitude > 0.01f)
         {
-            transform.position += transform.forward * walkSpeed * Time.deltaTime;
+            Vector3 dirNormalized = direction.normalized;
+            float alignment = Vector3.Dot(transform.forward, dirNormalized);
+
+            // Always rotate toward the target.
+            float rotateSpeed = Mathf.Lerp(4f, 1.5f, (alignment + 1f) * 0.5f);
+            Quaternion lookRot = Quaternion.LookRotation(dirNormalized);
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, Time.deltaTime * rotateSpeed);
+
+            // Translate forward only if:
+            // - Reasonably aligned with target.
+            // - Not too close to the player (cinematic constraint).
+            // - No wall blocking forward motion.
+            bool aligned = alignment > 0.5f;
+            bool farEnough = walkTarget != null || distance > minDistanceToPlayer;
+            bool clearAhead = !useWallSafety || !IsWallAhead();
+
+            if (aligned && farEnough && clearAhead)
+            {
+                float speed = (mode == MovementMode.Running) ? runSpeed : walkSpeed;
+                transform.position += transform.forward * speed * Time.deltaTime;
+                isTranslatingThisFrame = true;
+            }
+        }
+
+        // Drive walk/run animation by whether we actually translated this frame.
+        if (anim != null)
+        {
+            bool walking = isTranslatingThisFrame && mode == MovementMode.Walking;
+            bool running = isTranslatingThisFrame && mode == MovementMode.Running;
+            anim.SetBool("Walking", walking);
+            anim.SetBool("Running", running);
         }
     }
 
-    // Player caught trigger: only fires when chasing the player (not a fixed target).
-    if (walkTarget == null && direction.magnitude < 1.2f)
+    // Forward raycast to detect walls.
+    private bool IsWallAhead()
     {
-        walking = false;
-        if (anim != null) anim.SetBool("Walking", false);
-        onPlayerCaught?.Invoke();
+        // Cast from chest height to avoid floor false-positives.
+        Vector3 origin = transform.position + Vector3.up * 1.0f;
+        return Physics.Raycast(origin, transform.forward, wallCheckDistance, wallLayers, QueryTriggerInteraction.Ignore);
     }
-}
+
+    // Visualize the wall check in Scene view for debugging.
+    private void OnDrawGizmosSelected()
+    {
+        if (!useWallSafety) return;
+        Gizmos.color = Color.yellow;
+        Vector3 origin = transform.position + Vector3.up * 1.0f;
+        Gizmos.DrawLine(origin, origin + transform.forward * wallCheckDistance);
+    }
+
     private IEnumerator FadeIn()
     {
         if (fadeInDuration <= 0f)
@@ -165,7 +236,6 @@ private void Update()
 
     private void SetRenderersAlpha(float alpha)
     {
-        // Works with URP/Lit or Standard shaders that have a _BaseColor or _Color property.
         foreach (Renderer r in renderers)
         {
             r.enabled = true;

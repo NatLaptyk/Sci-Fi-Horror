@@ -19,5 +19,5 @@ MonoBehaviour:
     displayDuration: 3
   choices: []
   autoAdvanceNode: {fileID: 11400000, guid: f2167ea9faf64b247aa14b1612fee7dd, type: 2}
-  isEndNode: 0
-  completionEventName: 
+  isEndNode: 1
+  completionEventName: SegmentC_Complete
