@@ -18,6 +18,6 @@ MonoBehaviour:
     audioClip: {fileID: 0}
     displayDuration: 3
   choices: []
-  autoAdvanceNode: {fileID: 11400000, guid: 2d9c50ae21fc95d4ea013c61a3c2d2e6, type: 2}
+  autoAdvanceNode: {fileID: 0}
   isEndNode: 0
   completionEventName: 

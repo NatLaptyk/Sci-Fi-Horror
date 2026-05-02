@@ -49,9 +49,9 @@ MonoBehaviour:
       displayDuration: 3
     sophieResponse:
       speakerName: Sophie
-      text: No, please come to me.
+      text: 
       audioClip: {fileID: 0}
-      displayDuration: 3
+      displayDuration: 0
     nextNode: {fileID: 11400000, guid: c565c579a655db147af6c93d672242a2, type: 2}
   - buttonText: 'Because if I look at you, I''ll believe it
 

@@ -17,10 +17,6 @@ MonoBehaviour:
     text: "Can you also help me change? I can\u2019t figure out how this comes off."
     audioClip: {fileID: 8300000, guid: 3d777c570d0fbe24fbb37393afa1424e, type: 3}
     displayDuration: 3
-  - speakerName: Adam
-    text: Let me see.
-    audioClip: {fileID: 8300000, guid: ff891d84df147ce46b169284da3c6adb, type: 3}
-    displayDuration: 3
   choices: []
   autoAdvanceNode: {fileID: 0}
   isEndNode: 1

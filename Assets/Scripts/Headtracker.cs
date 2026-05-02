@@ -4,23 +4,16 @@ using UnityEngine.Events;
 
 // Head tracking + turn-around-and-stare for humanoid characters.
 //
-// IMPORTANT: this version uses Unity's Animator IK system (OnAnimatorIK + SetLookAtPosition)
-// for natural look-at tracking. Direct bone manipulation is used only for the head-turn effect.
-//
-// SETUP REQUIREMENTS:
-//  1. The character must be a Humanoid avatar.
-//  2. The Animator Controller's Base Layer must have "IK Pass" enabled.
-//  3. Drag the head bone into headBone field for the head-turn effect.
+// During the stare phase, the head can also tilt to look directly at the player
+// (downward if the player is below her eyeline). This produces a "she's looking
+// AT him specifically" effect — more menacing than a flat backward gaze.
 
 public class HeadTracker : MonoBehaviour
 {
     public enum HeadMode { Idle, TrackTarget, HeadTurn }
 
     [Header("References")]
-    [Tooltip("The Animator on the humanoid character. IK Pass must be enabled on its Base Layer.")]
     [SerializeField] private Animator animator;
-
-    [Tooltip("The head bone Transform. Used for the head-turn effect. Auto-found by name if left null.")]
     [SerializeField] private Transform headBone;
 
     [Header("Tracking")]
@@ -35,46 +28,38 @@ public class HeadTracker : MonoBehaviour
     [Range(0f, 1f)] [SerializeField] private float clampWeight = 0.4f;
 
     [Header("Head Turn Behavior")]
-    [Tooltip("How far to rotate the head, in degrees. 180 = look directly backward.")]
     [SerializeField] private float headTurnAngle = 180f;
-
-    [Tooltip("Direction. 1 = clockwise, -1 = counter-clockwise.")]
     [SerializeField] private float turnDirection = 1f;
-
-    [Tooltip("Time to rotate from forward to facing-backward.")]
     [SerializeField] private float turnOutDuration = 1.5f;
-
-    [Tooltip("Time to hold the staring-backward pose. The horror beat.")]
     [SerializeField] private float stareDuration = 4f;
-
-    [Tooltip("Time to rotate back to forward. Set to 0 if you don't want the head to return.")]
     [SerializeField] private float turnBackDuration = 1f;
-
-    [Tooltip("Easing curve. Default is ease-in-out, which feels mechanical and wrong.")]
     [SerializeField] private AnimationCurve turnCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
+
+    [Header("Stare-at-Player (during the stare phase)")]
+    [Tooltip("When the head reaches the staring position, tilt it to look directly at the target. Adds a 'predator' quality to the stare.")]
+    [SerializeField] private bool tiltToTargetDuringStare = true;
+
+    [Tooltip("Time taken to tilt to the player's eyeline once the turn-out completes.")]
+    [SerializeField] private float tiltDuration = 0.5f;
+
+    [Tooltip("Maximum pitch (down or up). Limits how extreme the tilt can get to avoid mesh distortion.")]
+    [Range(0f, 70f)] [SerializeField] private float maxPitchAngle = 35f;
 
     [Header("Audio")]
     [SerializeField] private AudioSource audioSource;
-    [Tooltip("Played when the turn-out begins. A neck crack or wet snap.")]
     [SerializeField] private AudioClip turnOutSound;
-
-    [Tooltip("Played when the head returns to forward. Optional.")]
     [SerializeField] private AudioClip turnBackSound;
 
     [Header("Events")]
-    [Tooltip("Fires once the head reaches the staring-back position (start of the stare).")]
     [SerializeField] private UnityEvent onStareReached;
-
-    [Tooltip("Fires after stareDuration ends (start of the return motion).")]
     [SerializeField] private UnityEvent onStareEnded;
-
-    [Tooltip("Fires when the entire turn sequence (out + stare + return) is complete.")]
     [SerializeField] private UnityEvent onTurnSequenceComplete;
 
     // Internal state.
     private HeadMode currentMode = HeadMode.Idle;
     private float currentLookWeight = 0f;
     private float currentTurnAngle = 0f;
+    private float currentTiltAngle = 0f;
     private Quaternion turnRestRotation;
     private bool turnRestCaptured = false;
 
@@ -110,7 +95,6 @@ public class HeadTracker : MonoBehaviour
         return null;
     }
 
-    // Public API.
     public void TrackPlayer()
     {
         Debug.Log("HeadTracker: TrackPlayer called.");
@@ -123,12 +107,8 @@ public class HeadTracker : MonoBehaviour
         currentMode = HeadMode.Idle;
     }
 
-    public void RecaptureRestPose()
-    {
-        // No-op in IK mode. Kept for backwards compatibility.
-    }
+    public void RecaptureRestPose() { /* No-op in IK mode */ }
 
-    // Begin the turn-out → stare → return sequence.
     public void StartHeadTurn()
     {
         Debug.Log("HeadTracker: StartHeadTurn called.");
@@ -141,15 +121,12 @@ public class HeadTracker : MonoBehaviour
         turnRestRotation = headBone.localRotation;
         turnRestCaptured = true;
         currentTurnAngle = 0f;
+        currentTiltAngle = 0f;
         currentMode = HeadMode.HeadTurn;
         StartCoroutine(HeadTurnRoutine());
     }
 
-    // Backwards-compatible alias for any existing wiring that calls StartSpin360.
-    public void StartSpin360()
-    {
-        StartHeadTurn();
-    }
+    public void StartSpin360() { StartHeadTurn(); }
 
     private IEnumerator HeadTurnRoutine()
     {
@@ -170,12 +147,30 @@ public class HeadTracker : MonoBehaviour
         }
         currentTurnAngle = targetAngle;
 
+        // Phase 1.5: tilt the head to look directly at the player (if enabled).
+        if (tiltToTargetDuringStare && target != null)
+        {
+            float requiredPitch = ComputePitchToTarget();
+            requiredPitch = Mathf.Clamp(requiredPitch, -maxPitchAngle, maxPitchAngle);
+
+            float t = 0f;
+            float startTilt = currentTiltAngle;
+            while (t < tiltDuration)
+            {
+                t += Time.deltaTime;
+                float k = turnCurve.Evaluate(t / tiltDuration);
+                currentTiltAngle = Mathf.Lerp(startTilt, requiredPitch, k);
+                yield return null;
+            }
+            currentTiltAngle = requiredPitch;
+        }
+
         // Phase 2: hold the stare. THIS is the horror moment.
         onStareReached?.Invoke();
         yield return new WaitForSeconds(stareDuration);
         onStareEnded?.Invoke();
 
-        // Phase 3: rotate back to forward (or stay if turnBackDuration is 0).
+        // Phase 3: rotate back to forward.
         if (turnBackDuration > 0f)
         {
             if (audioSource != null && turnBackSound != null)
@@ -184,27 +179,59 @@ public class HeadTracker : MonoBehaviour
             }
 
             float startAngle = currentTurnAngle;
-            elapsed = 0f;
-            while (elapsed < turnBackDuration)
+            float startTilt = currentTiltAngle;
+            float t = 0f;
+            while (t < turnBackDuration)
             {
-                elapsed += Time.deltaTime;
-                float k = turnCurve.Evaluate(elapsed / turnBackDuration);
+                t += Time.deltaTime;
+                float k = turnCurve.Evaluate(t / turnBackDuration);
                 currentTurnAngle = Mathf.Lerp(startAngle, 0f, k);
+                currentTiltAngle = Mathf.Lerp(startTilt, 0f, k);
                 yield return null;
             }
             currentTurnAngle = 0f;
+            currentTiltAngle = 0f;
         }
 
         currentMode = HeadMode.Idle;
         onTurnSequenceComplete?.Invoke();
     }
 
-    // Called by Unity when IK Pass is enabled on the Animator's Base Layer.
+    // Compute how many degrees of pitch are needed to look directly at target,
+    // measured from Sophie's current head position with her body facing forward.
+    private float ComputePitchToTarget()
+    {
+        if (target == null || headBone == null) return 0f;
+
+        // We need the angle in the LOCAL space of the head's parent (the neck),
+        // but accounting for the fact that the head will be facing backward.
+        // Simplest: compute world-space vector to target, then project pitch.
+        Vector3 toTarget = target.position - headBone.position;
+
+        // Horizontal distance vs vertical distance gives us the pitch.
+        // But we want pitch relative to the head's "forward" direction during stare,
+        // which is OPPOSITE to body forward.
+        Vector3 forwardDuringStare = -transform.forward;
+
+        // Project target direction onto the plane perpendicular to up, get horizontal length.
+        Vector3 horizontal = Vector3.ProjectOnPlane(toTarget, Vector3.up);
+        float horizontalDistance = horizontal.magnitude;
+
+        if (horizontalDistance < 0.01f) return 0f;
+
+        // Vertical difference: positive = target is below head (looking down = +pitch).
+        float verticalDelta = headBone.position.y - target.position.y;
+
+        // atan(vertical / horizontal) in degrees.
+        float pitch = Mathf.Atan2(verticalDelta, horizontalDistance) * Mathf.Rad2Deg;
+
+        return pitch;
+    }
+
     private void OnAnimatorIK(int layerIndex)
     {
         if (animator == null) return;
 
-        // Disable IK during head turn so it doesn't fight the manual rotation.
         float targetWeight = (currentMode == HeadMode.TrackTarget && target != null) ? lookAtMaxWeight : 0f;
         currentLookWeight = Mathf.MoveTowards(currentLookWeight, targetWeight, weightRampSpeed * Time.deltaTime);
 
@@ -215,12 +242,12 @@ public class HeadTracker : MonoBehaviour
         }
     }
 
-    // Head-turn rotation runs in LateUpdate, after the Animator and IK pass.
     private void LateUpdate()
     {
         if (currentMode == HeadMode.HeadTurn && headBone != null && turnRestCaptured)
         {
-            headBone.localRotation = turnRestRotation * Quaternion.Euler(0f, currentTurnAngle, 0f);
+            // Combine yaw (turn) and pitch (tilt) into one rotation.
+            headBone.localRotation = turnRestRotation * Quaternion.Euler(currentTiltAngle, currentTurnAngle, 0f);
         }
     }
 }
