@@ -47205,6 +47205,30 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1583623283}
+        m_TargetAssemblyTypeName: SlidingDoor, Assembly-CSharp
+        m_MethodName: Lock
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 666861269}
+        m_TargetAssemblyTypeName: DelayedEvent, Assembly-CSharp
+        m_MethodName: Fire
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!65 &319969755
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -98781,6 +98805,66 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 421674, guid: 031729a7ef10c4aa1b5e0060c2f63acd, type: 3}
   m_PrefabInstance: {fileID: 287191895}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &666861268
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 666861270}
+  - component: {fileID: 666861269}
+  m_Layer: 0
+  m_Name: DelayBeforeShake
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &666861269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 666861268}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba6bf60a465925843ad588da8d62ca2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DelayedEvent
+  defaultDelay: 1.5
+  onDelayElapsed:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1583623290}
+        m_TargetAssemblyTypeName: DoorShaker, Assembly-CSharp
+        m_MethodName: PlayFullSequence
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!4 &666861270
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 666861268}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 9.96163, y: -2.39993, z: -11.92001}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &666972033
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -147442,6 +147526,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1195456935}
     m_Modifications:
+    - target: {fileID: 730041026486899369, guid: 8bfb4b7ce5f3a4a4d9f81ddf253d08a3, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 8cd37ddc662b72845bf8e7988bdac2f7, type: 2}
     - target: {fileID: 2002701791430904230, guid: 8bfb4b7ce5f3a4a4d9f81ddf253d08a3, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.49071595
@@ -223299,6 +223387,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 855477503413018875, guid: 9ce165dd222504a7dada2f13901e2cbd, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 5fd493424c7125f458e572dea7d4dd20, type: 2}
     - target: {fileID: 5570434288494733707, guid: 9ce165dd222504a7dada2f13901e2cbd, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -223328,6 +223420,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7521740185679601469, guid: 9ce165dd222504a7dada2f13901e2cbd, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1583623290}
+    - targetCorrespondingSourceObject: {fileID: 7521740185679601469, guid: 9ce165dd222504a7dada2f13901e2cbd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1583623295}
     - targetCorrespondingSourceObject: {fileID: 5570434288494733707, guid: 9ce165dd222504a7dada2f13901e2cbd, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1583623282}
@@ -223441,10 +223536,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee5604fd327b5694c9162becc2985654, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DoorShaker
-  audioSource: {fileID: 0}
-  stage1Clips: []
-  stage2Clips: []
-  stage3Clips: []
+  audioSource: {fileID: 1583623295}
+  stage1Clips:
+  - {fileID: 8300000, guid: 8b17913d2924c724d91ef2431c8f99b7, type: 3}
+  stage2Clips:
+  - {fileID: 8300000, guid: 7b2db30c505faae43b3dec7baaf9d45a, type: 3}
+  stage3Clips:
+  - {fileID: 8300000, guid: aeae9318ee5610e459c985cab6f7f809, type: 3}
   stage1Shake: 0.005
   stage2Shake: 0.02
   stage3Shake: 0.06
@@ -223470,6 +223568,103 @@ MonoBehaviour:
   onSequenceComplete:
     m_PersistentCalls:
       m_Calls: []
+--- !u!82 &1583623295
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1583623281}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1583879654 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100014, guid: a27242662722e417d9fe08ebbf85eb51, type: 3}
@@ -305077,3 +305272,4 @@ SceneRoots:
   - {fileID: 1710694278}
   - {fileID: 926482055}
   - {fileID: 61597207}
+  - {fileID: 666861270}
