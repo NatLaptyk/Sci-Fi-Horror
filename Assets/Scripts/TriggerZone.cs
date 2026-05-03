@@ -19,16 +19,22 @@ public class TriggerZone : MonoBehaviour
 {
     [Header("Trigger settings")]
     [SerializeField] private string playerTag = "Player";
+    [Tooltip("If true, the Enter event only fires the first time the player enters.")]
     [SerializeField] private bool fireOnce = true;
+    [Tooltip("If true, the Exit event only fires the first time the player exits. " +
+             "Tick this for one-shot beats like the door bang sequence.")]
+    [SerializeField] private bool fireExitOnce = false;
 
     [Header("Events")]
     [Tooltip("Fires when the player first enters this zone.")]
     [SerializeField] private UnityEvent onPlayerEnter;
 
-    [Tooltip("Fires when the player leaves (useful for ambient crossfades).")]
+    [Tooltip("Fires when the player leaves (useful for ambient crossfades, " +
+             "or one-shot beats if fireExitOnce is checked).")]
     [SerializeField] private UnityEvent onPlayerExit;
 
     private bool hasFired = false;
+    private bool hasExited = false;
 
     private void Reset()
     {
@@ -51,12 +57,16 @@ public class TriggerZone : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         if (!other.CompareTag(playerTag)) return;
+        if (fireExitOnce && hasExited) return;
+
+        hasExited = true;
         onPlayerExit?.Invoke();
     }
 
     public void ResetTrigger()
     {
         hasFired = false;
+        hasExited = false;
     }
 
     // Makes the zone visible in Scene view so designers can place it.
