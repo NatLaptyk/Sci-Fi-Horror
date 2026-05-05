@@ -89,9 +89,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 100000, guid: 53ee823ff543aa24d855d8f9f8c2b87b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5516197491106282451}
-    - targetCorrespondingSourceObject: {fileID: 100000, guid: 53ee823ff543aa24d855d8f9f8c2b87b, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 7500653232663247017}
   m_SourcePrefab: {fileID: 100100000, guid: 53ee823ff543aa24d855d8f9f8c2b87b, type: 3}
 --- !u!4 &5204098141979374964 stripped
 Transform:
@@ -262,18 +259,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AudioLogTrigger
   log: {fileID: 11400000, guid: 4473c488e841afd438701c95b7c94348, type: 2}
---- !u!114 &7500653232663247017
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5204098141979470164}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7189a56fd2418e746af4cba743df35b8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FaceCamera
 --- !u!1001 &9207018960141333204
 PrefabInstance:
   m_ObjectHideFlags: 0
