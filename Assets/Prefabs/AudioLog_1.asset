@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: AudioLog_1
   m_EditorClassIdentifier: Assembly-CSharp::AudioLog
   entryTitle: "Station Log \u2014 Dr. Reyes, Mission Day 11"
-  audioClip: {fileID: 0}
+  audioClip: {fileID: 8300000, guid: f9e92a6951db24642b6d339ee5991747, type: 3}
   transcript: "\"The Ocean doesn't attack. It gives. It gives you exactly what you
-    cannot bear to see. Kris walked into the lab today and she's been dead for three
-    years. She knew things about our last conversation that I never told anyone.
-    I ran the tissue scans \u2014 there's no human biology there. Just\u2026 something
-    that learned to be her from my grief.\""
+    cannot bear to see. Wiliams my firend and colleague from my first mission walked
+    into the lab today and he's been dead for three years. He knew things about our
+    last conversation that I never told anyone. I ran the tissue scans \u2014 there's
+    no human biology there. Just\u2026 something that learned to be her from my grief.\""
