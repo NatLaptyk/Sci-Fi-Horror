@@ -42,7 +42,7 @@ GameObject:
   m_Component:
   - component: {fileID: 752561002829875511}
   m_Layer: 0
-  m_Name: BookHeadMonster_withBlood
+  m_Name: Monster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
