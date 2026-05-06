@@ -19,11 +19,16 @@ public class TriggerZone : MonoBehaviour
 {
     [Header("Trigger settings")]
     [SerializeField] private string playerTag = "Player";
-    [Tooltip("If true, the Enter event only fires the first time the player enters.")]
+    [Tooltip("If true, the Enter event only fires the first time the player enters " +
+             "(after skipping any enters specified by Enters To Skip).")]
     [SerializeField] private bool fireOnce = true;
     [Tooltip("If true, the Exit event only fires the first time the player exits. " +
              "Tick this for one-shot beats like the door bang sequence.")]
     [SerializeField] private bool fireExitOnce = false;
+    [Tooltip("Number of enters to ignore before the Enter event starts firing. " +
+             "0 = fire on first enter (default). 1 = skip first enter, fire on second. " +
+             "Useful when the player has to revisit a zone before something happens.")]
+    [SerializeField] private int entersToSkip = 0;
 
     [Header("Events")]
     [Tooltip("Fires when the player first enters this zone.")]
@@ -35,6 +40,7 @@ public class TriggerZone : MonoBehaviour
 
     private bool hasFired = false;
     private bool hasExited = false;
+    private int enterCount = 0;
 
     private void Reset()
     {
@@ -48,6 +54,14 @@ public class TriggerZone : MonoBehaviour
         // Starter Assets puts the CharacterController on the root GameObject
         // which is tagged "Player" — so CompareTag works correctly.
         if (!other.CompareTag(playerTag)) return;
+
+        // Skip the first N enters if configured (e.g. fire on second visit).
+        if (enterCount < entersToSkip)
+        {
+            enterCount++;
+            return;
+        }
+
         if (fireOnce && hasFired) return;
 
         hasFired = true;
@@ -67,6 +81,7 @@ public class TriggerZone : MonoBehaviour
     {
         hasFired = false;
         hasExited = false;
+        enterCount = 0;
     }
 
     // Makes the zone visible in Scene view so designers can place it.

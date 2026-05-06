@@ -43,6 +43,15 @@ public class VisitorController : MonoBehaviour
     [Header("Appearance")]
     [SerializeField] private float fadeInDuration = 0.5f;
 
+    [Header("Spawn-in-front-of-player (used by AppearInFrontOfPlayer)")]
+    [Tooltip("Distance in front of the player where the visitor spawns. ~3m feels close but not in-your-face.")]
+    [SerializeField] private float spawnDistanceFromPlayer = 3f;
+    [Tooltip("Layers considered as walls when checking if the spawn spot is blocked. Default = all.")]
+    [SerializeField] private LayerMask spawnWallLayers = ~0;
+    [Tooltip("Animator state to snap into when spawning in front of the player " +
+             "(e.g. 'Idle', 'Standing'). Leave empty to keep the default Animator state.")]
+    [SerializeField] private string appearInFrontPoseState = "Idle";
+
     [Header("Events")]
     [SerializeField] private UnityEvent onPlayerCaught;
 
@@ -73,6 +82,92 @@ public class VisitorController : MonoBehaviour
     {
         gameObject.SetActive(true);
         StartCoroutine(FadeIn());
+    }
+
+    // Reposition the visitor to a spot in front of the player, then fade in.
+    // Use this for "she appears wherever you are right now" moments.
+    public void AppearInFrontOfPlayer()
+    {
+        // Re-acquire player if needed (in case scene was reloaded).
+        if (player == null)
+        {
+            GameObject p = GameObject.FindGameObjectWithTag("Player");
+            if (p != null) player = p.transform;
+        }
+        if (player == null)
+        {
+            Debug.LogWarning("VisitorController.AppearInFrontOfPlayer: no player found.");
+            return;
+        }
+
+        // Use the player's flat forward direction (ignore vertical look).
+        Vector3 forward = player.forward;
+        forward.y = 0f;
+        if (forward.sqrMagnitude < 0.01f) forward = Vector3.forward;
+        forward.Normalize();
+
+        // If a wall is between the player and the desired spawn point,
+        // pull the spawn distance back to just in front of the wall.
+        float effectiveDistance = spawnDistanceFromPlayer;
+        Vector3 rayOrigin = player.position + Vector3.up * 1.0f; // chest height
+        if (Physics.Raycast(rayOrigin, forward, out RaycastHit hit,
+                            spawnDistanceFromPlayer, spawnWallLayers, QueryTriggerInteraction.Ignore))
+        {
+            effectiveDistance = Mathf.Max(0.5f, hit.distance - 0.5f);
+        }
+
+        // Horizontal spawn position (X/Z only).
+        Vector3 horizontalSpawn = player.position + forward * effectiveDistance;
+
+        // Find the floor under the spawn point by casting downward from the
+        // player's own y (which is guaranteed to be inside the room — below the
+        // ceiling and above the floor). Casting from way above the player risks
+        // starting above the ceiling and hitting the ceiling top instead.
+        // Temporarily disable any colliders on Sophie so the ray can't hit her own bones.
+        Collider[] myColliders = GetComponentsInChildren<Collider>();
+        foreach (Collider c in myColliders) if (c != null) c.enabled = false;
+
+        float spawnY = player.position.y; // fallback if no floor is found
+        Vector3 floorRayStart = new Vector3(horizontalSpawn.x, player.position.y, horizontalSpawn.z);
+        bool floorFound = Physics.Raycast(floorRayStart, Vector3.down, out RaycastHit floorHit,
+                                          50f, spawnWallLayers, QueryTriggerInteraction.Ignore);
+        if (floorFound)
+        {
+            spawnY = floorHit.point.y;
+        }
+
+        foreach (Collider c in myColliders) if (c != null) c.enabled = true;
+
+        Vector3 spawnPos = new Vector3(horizontalSpawn.x, spawnY, horizontalSpawn.z);
+        transform.position = spawnPos;
+
+        Debug.Log($"VisitorController.AppearInFrontOfPlayer: player at {player.position}, " +
+                  $"spawned at {spawnPos}. Floor raycast {(floorFound ? $"hit {floorHit.collider.name} at y={floorHit.point.y:F2}" : "missed")}.");
+
+        // Face the player.
+        Vector3 lookDir = player.position - transform.position;
+        lookDir.y = 0f;
+        if (lookDir.sqrMagnitude > 0.01f)
+        {
+            transform.rotation = Quaternion.LookRotation(lookDir);
+        }
+
+        // Clear any leftover walk/run state so the standing pose isn't fighting movement bools.
+        mode = MovementMode.Idle;
+        if (anim != null)
+        {
+            anim.SetBool("Walking", false);
+            anim.SetBool("Running", false);
+        }
+
+        Appear();
+
+        // Force the desired pose. Animator.Play(name, layer, normalizedTime)
+        // jumps directly into the state and resets it to frame 0.
+        if (anim != null && !string.IsNullOrEmpty(appearInFrontPoseState))
+        {
+            anim.Play(appearInFrontPoseState, 0, 0f);
+        }
     }
 
     public void Disappear()

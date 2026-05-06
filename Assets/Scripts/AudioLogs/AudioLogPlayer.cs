@@ -39,8 +39,13 @@ public class AudioLogPlayer : MonoBehaviour
     [SerializeField] private UnityEvent onLogStarted;
     [SerializeField] private UnityEvent onLogEnded;
 
+    // Fires with the specific AudioLog that just finished. Used by AudioLogTrigger
+    // so each log's trigger can react to ITS own log finishing (not all logs).
+    public event System.Action<AudioLog> OnLogEndedTyped;
+
     private Coroutine activeRoutine;
     private bool isPlaying;
+    private AudioLog currentLog;
 
     private void Awake()
     {
@@ -105,12 +110,15 @@ public class AudioLogPlayer : MonoBehaviour
         {
             isPlaying = false;
             onLogEnded?.Invoke();
+            OnLogEndedTyped?.Invoke(currentLog);
+            currentLog = null;
         }
     }
 
     private IEnumerator PlayRoutine(AudioLog log)
     {
         isPlaying = true;
+        currentLog = log;
         onLogStarted?.Invoke();
 
         if (audioLogUI != null) audioLogUI.Show(log.entryTitle, log.transcript);
