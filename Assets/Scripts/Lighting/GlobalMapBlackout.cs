@@ -35,7 +35,7 @@ public class GlobalMapBlackout : MonoBehaviour
             }
         }
 
-        // 2. Cache all other lights
+        // 2. Cache all other lights from the parent groups
         foreach (Transform parent in otherLightParents)
         {
             if (parent != null)
@@ -51,6 +51,7 @@ public class GlobalMapBlackout : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        // Only trigger if the player enters and we haven't run this yet
         if (!hasTriggered && other.CompareTag("Player"))
         {
             hasTriggered = true;
@@ -74,19 +75,27 @@ public class GlobalMapBlackout : MonoBehaviour
             yield return new WaitForSeconds(shutOffDelay);
         }
 
-        // --- STEP 2: TOTAL BLACKOUT (Everything else goes dark) ---
+        // --- STEP 2: THE AUDIO CUT (Hard stop for the 'Cry' source) ---
+        // We look for the AudioSource on this object or its children
+        AudioSource cryAudio = GetComponentInChildren<AudioSource>();
+        if (cryAudio != null)
+        {
+            cryAudio.Stop();
+        }
+
+        // --- STEP 3: TOTAL BLACKOUT (Everything else goes dark) ---
         foreach (Light l in globalLights)
         {
             l.enabled = false;
         }
 
-        // --- STEP 3: THE SWAP (Girl vanishes, Monster appears) ---
+        // --- STEP 4: THE SWAP (Girl vanishes, Monster appears) ---
         if (civilianGirl != null)
         {
-            // Capture position before she's gone
+            // Capture position before she's destroyed
             Vector3 spawnPos = civilianGirl.transform.position;
             
-            // Remove the woman right after lights go out
+            // Remove the girl immediately
             Destroy(civilianGirl);
 
             // Spawn the Monster
@@ -97,12 +106,13 @@ public class GlobalMapBlackout : MonoBehaviour
                 
                 GameObject monster = Instantiate(monsterPrefab, spawnPos, rot);
                 
-                // SCALE: 1.99 (40% bigger than 1.42)
+                // SCALE: 1.99 (roughly 40% bigger than 1.42)
                 monster.transform.localScale = new Vector3(1.99f, 1.99f, 1.99f);
             }
         }
 
-        // --- STEP 4: FINAL BEAT ---
+        // --- STEP 5: FINAL BEAT ---
+        // Wait for one second of silence/darkness before the jump-scare sound
         yield return new WaitForSeconds(1.0f);
 
         if (SoundManager.Instance != null)
