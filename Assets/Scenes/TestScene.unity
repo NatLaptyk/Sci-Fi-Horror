@@ -11104,15 +11104,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4052514163483321253, guid: f496fcb1c7ee0f849947a8e6200e143d, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.62894434
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4052514163483321253, guid: f496fcb1c7ee0f849947a8e6200e143d, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.6364816
+      value: 0.83886
       objectReference: {fileID: 0}
     - target: {fileID: 4052514163483321253, guid: f496fcb1c7ee0f849947a8e6200e143d, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.751656
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4052514163483321253, guid: f496fcb1c7ee0f849947a8e6200e143d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -16955,7 +16955,7 @@ GameObject:
   - component: {fileID: 236540243}
   - component: {fileID: 236540242}
   - component: {fileID: 236540241}
-  - component: {fileID: 236540240}
+  - component: {fileID: 236540244}
   m_Layer: 0
   m_Name: Goback
   m_TagString: Untagged
@@ -16978,19 +16978,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1399481944}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &236540240
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 236540238}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 536a41bd33687401b994348178d05dc2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GoBack
-  stingerID: 19
 --- !u!65 &236540241
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -17068,6 +17055,40 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 236540238}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &236540244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 236540238}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb5906fe6eccaf34c9a3e8de7623adac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TriggerZone
+  playerTag: Player
+  fireOnce: 1
+  fireExitOnce: 0
+  entersToSkip: 0
+  onPlayerEnter:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 90749723}
+        m_TargetAssemblyTypeName: SoundManager, Assembly-CSharp
+        m_MethodName: PlayStinger
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 19
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onPlayerExit:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &237088675
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -34439,7 +34460,7 @@ GameObject:
   - component: {fileID: 492504789}
   - component: {fileID: 492504788}
   - component: {fileID: 492504787}
-  - component: {fileID: 492504790}
+  - component: {fileID: 492504791}
   m_Layer: 0
   m_Name: AI voice trigger - warning
   m_TagString: Untagged
@@ -34539,7 +34560,7 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 492504785}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &492504790
+--- !u!114 &492504791
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -34548,10 +34569,31 @@ MonoBehaviour:
   m_GameObject: {fileID: 492504785}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2426e8b6c56f40a4933a70dfe950d32, type: 3}
+  m_Script: {fileID: 11500000, guid: bb5906fe6eccaf34c9a3e8de7623adac, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::AIWarning
-  stingerID: 16
+  m_EditorClassIdentifier: Assembly-CSharp::TriggerZone
+  playerTag: Player
+  fireOnce: 1
+  fireExitOnce: 0
+  entersToSkip: 0
+  onPlayerEnter:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 90749723}
+        m_TargetAssemblyTypeName: SoundManager, Assembly-CSharp
+        m_MethodName: PlayStinger
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 16
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onPlayerExit:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &493440933 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5304752588344341603, guid: d5d9b38faad724fa0855ec2bbd572999, type: 3}
@@ -69139,6 +69181,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   appearInFrontPoseState: Idle
+  pauseBeforeChase: 1.5
   onPlayerCaught:
     m_PersistentCalls:
       m_Calls: []
@@ -73467,7 +73510,7 @@ GameObject:
   - component: {fileID: 1042668521}
   - component: {fileID: 1042668520}
   - component: {fileID: 1042668519}
-  - component: {fileID: 1042668518}
+  - component: {fileID: 1042668522}
   m_Layer: 0
   m_Name: corridor locked
   m_TagString: Untagged
@@ -73490,19 +73533,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1399481944}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1042668518
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1042668516}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43ce85ca12a6a459c91cfb11d5c164e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Corridorlocked
-  stingerID: 16
 --- !u!65 &1042668519
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -73580,6 +73610,40 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1042668516}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1042668522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1042668516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb5906fe6eccaf34c9a3e8de7623adac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TriggerZone
+  playerTag: Player
+  fireOnce: 1
+  fireExitOnce: 0
+  entersToSkip: 0
+  onPlayerEnter:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 90749723}
+        m_TargetAssemblyTypeName: SoundManager, Assembly-CSharp
+        m_MethodName: PlayStinger
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 17
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onPlayerExit:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1043712116 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: f7ba46c53b07be0478b182cf25d1ef20, type: 3}
@@ -78201,6 +78265,7 @@ GameObject:
   - component: {fileID: 1096982840}
   - component: {fileID: 1096982839}
   - component: {fileID: 1096982838}
+  - component: {fileID: 1096982842}
   m_Layer: 0
   m_Name: Go to the door
   m_TagString: Untagged
@@ -78313,6 +78378,28 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1096982836}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1096982842
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1096982836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb5906fe6eccaf34c9a3e8de7623adac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TriggerZone
+  playerTag: Player
+  fireOnce: 1
+  fireExitOnce: 0
+  entersToSkip: 0
+  onPlayerEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  onPlayerExit:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &1099090876
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -104989,6 +105076,7 @@ GameObject:
   - component: {fileID: 1465165888}
   - component: {fileID: 1465165887}
   - component: {fileID: 1465165886}
+  - component: {fileID: 1465165889}
   m_Layer: 0
   m_Name: Final trigger
   m_TagString: Untagged
@@ -105088,6 +105176,28 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1465165884}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1465165889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1465165884}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb5906fe6eccaf34c9a3e8de7623adac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TriggerZone
+  playerTag: Player
+  fireOnce: 1
+  fireExitOnce: 0
+  entersToSkip: 0
+  onPlayerEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  onPlayerExit:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1465944489
 GameObject:
   m_ObjectHideFlags: 0
@@ -114985,6 +115095,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   appearInFrontPoseState: StandingIdle
+  pauseBeforeChase: 1.5
   onPlayerCaught:
     m_PersistentCalls:
       m_Calls:
@@ -117762,6 +117873,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   appearInFrontPoseState: Idle
+  pauseBeforeChase: 1.5
   onPlayerCaught:
     m_PersistentCalls:
       m_Calls: []

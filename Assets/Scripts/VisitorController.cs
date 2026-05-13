@@ -51,6 +51,9 @@ public class VisitorController : MonoBehaviour
     [Tooltip("Animator state to snap into when spawning in front of the player " +
              "(e.g. 'Idle', 'Standing'). Leave empty to keep the default Animator state.")]
     [SerializeField] private string appearInFrontPoseState = "Idle";
+    [Tooltip("Seconds to hold the standing pose before bursting into a run. " +
+             "Only used by AppearInFrontAndChase. 1.0-2.0s feels right for a horror beat.")]
+    [SerializeField] private float pauseBeforeChase = 1.5f;
 
     [Header("Events")]
     [SerializeField] private UnityEvent onPlayerCaught;
@@ -168,6 +171,23 @@ public class VisitorController : MonoBehaviour
         {
             anim.Play(appearInFrontPoseState, 0, 0f);
         }
+    }
+
+    // Option C from the Solaris chase plan: appear standing in front of the player,
+    // hold the pose for a dramatic beat, then explode into a run. The pause is
+    // where HeadTracker (if enabled) can lock onto the player for the stare.
+    public void AppearInFrontAndChase()
+    {
+        AppearInFrontOfPlayer();
+        if (player == null) return; // AppearInFrontOfPlayer warned; skip the chase
+        StartCoroutine(PauseThenChase());
+    }
+
+    private IEnumerator PauseThenChase()
+    {
+        yield return new WaitForSeconds(pauseBeforeChase);
+        Debug.Log("VisitorController: pause finished, bursting into run");
+        StartRunningTowardPlayer();
     }
 
     public void Disappear()
