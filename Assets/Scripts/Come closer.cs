@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class AIWarning : MonoBehaviour
+public class Comecloser : MonoBehaviour
 {
     
     [Header("Audio")]
