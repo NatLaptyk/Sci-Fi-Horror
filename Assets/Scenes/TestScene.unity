@@ -53925,6 +53925,30 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1596015584}
+        m_TargetAssemblyTypeName: HeadTracker, Assembly-CSharp
+        m_MethodName: TrackPlayer
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 13
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1045123586}
+        m_TargetAssemblyTypeName: Interactable, Assembly-CSharp
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 13
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!4 &779020053
 Transform:
   m_ObjectHideFlags: 0
@@ -68912,6 +68936,9 @@ MonoBehaviour:
     m_Bits: 4294967295
   appearInFrontPoseState: Idle
   pauseBeforeChase: 1.5
+  adaptToPlayerSpeed: 1
+  runSpeedThreshold: 3
+  speedSampleSmoothing: 5
   onPlayerCaught:
     m_PersistentCalls:
       m_Calls: []
@@ -114826,6 +114853,9 @@ MonoBehaviour:
     m_Bits: 4294967295
   appearInFrontPoseState: StandingIdle
   pauseBeforeChase: 1.5
+  adaptToPlayerSpeed: 1
+  runSpeedThreshold: 3
+  speedSampleSmoothing: 5
   onPlayerCaught:
     m_PersistentCalls:
       m_Calls:
@@ -117604,6 +117634,9 @@ MonoBehaviour:
     m_Bits: 4294967295
   appearInFrontPoseState: Idle
   pauseBeforeChase: 1.5
+  adaptToPlayerSpeed: 1
+  runSpeedThreshold: 3
+  speedSampleSmoothing: 5
   onPlayerCaught:
     m_PersistentCalls:
       m_Calls: []

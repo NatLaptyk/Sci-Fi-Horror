@@ -55,6 +55,14 @@ public class VisitorController : MonoBehaviour
              "Only used by AppearInFrontAndChase. 1.0-2.0s feels right for a horror beat.")]
     [SerializeField] private float pauseBeforeChase = 1.5f;
 
+    [Header("Adaptive chase (player-speed driven)")]
+    [Tooltip("If true, Sophie automatically switches between walking and running based on the player's speed. Walks by default, runs when the player sprints.")]
+    [SerializeField] private bool adaptToPlayerSpeed = true;
+    [Tooltip("Player speed (m/s) above which Sophie switches to running. Starter Assets player walks ~2 m/s, sprints ~5 m/s. 3.0 is a good threshold.")]
+    [SerializeField] private float runSpeedThreshold = 3.0f;
+    [Tooltip("How quickly to react to changes in player speed. Higher = snappier mode switches, lower = smoother transitions.")]
+    [SerializeField] private float speedSampleSmoothing = 5f;
+
     [Header("Events")]
     [SerializeField] private UnityEvent onPlayerCaught;
 
@@ -63,6 +71,10 @@ public class VisitorController : MonoBehaviour
     private Transform walkTarget;
     private Renderer[] renderers;
     private Animator anim;
+
+    private Vector3 lastPlayerPos;
+    private float smoothedPlayerSpeed = 0f;
+    private bool playerPosInitialized = false;
 
     private void Awake()
     {
@@ -186,8 +198,10 @@ public class VisitorController : MonoBehaviour
     private IEnumerator PauseThenChase()
     {
         yield return new WaitForSeconds(pauseBeforeChase);
-        Debug.Log("VisitorController: pause finished, bursting into run");
-        StartRunningTowardPlayer();
+        Debug.Log("VisitorController: pause finished, beginning chase");
+        // Start walking. If adaptToPlayerSpeed is on, Update() will escalate to running
+        // when the player sprints. If it's off, she stays walking until the script tells her otherwise.
+        StartWalkingTowardPlayer();
     }
 
     public void Disappear()
@@ -262,6 +276,36 @@ public class VisitorController : MonoBehaviour
 
         Transform target = walkTarget != null ? walkTarget : player;
         if (target == null) return;
+
+        // Adaptive chase: sample player's horizontal speed, smooth it, switch mode if it crosses the threshold.
+        if (adaptToPlayerSpeed && player != null)
+        {
+            if (!playerPosInitialized)
+            {
+                lastPlayerPos = player.position;
+                playerPosInitialized = true;
+            }
+
+            Vector3 delta = player.position - lastPlayerPos;
+            delta.y = 0f;
+            float instantSpeed = delta.magnitude / Mathf.Max(0.001f, Time.deltaTime);
+            lastPlayerPos = player.position;
+
+            // Smooth so a single jittery frame doesn't flip her mode.
+            smoothedPlayerSpeed = Mathf.Lerp(smoothedPlayerSpeed, instantSpeed, Time.deltaTime * speedSampleSmoothing);
+
+            // Mode switch (only between Walking and Running — don't override Idle).
+            if (smoothedPlayerSpeed > runSpeedThreshold && mode == MovementMode.Walking)
+            {
+                mode = MovementMode.Running;
+                if (anim != null) { anim.SetBool("Walking", false); anim.SetBool("Running", true); }
+            }
+            else if (smoothedPlayerSpeed <= runSpeedThreshold && mode == MovementMode.Running)
+            {
+                mode = MovementMode.Walking;
+                if (anim != null) { anim.SetBool("Walking", true); anim.SetBool("Running", false); }
+            }
+        }
 
         Vector3 direction = target.position - transform.position;
         direction.y = 0f;
