@@ -63,6 +63,22 @@ public class VisitorController : MonoBehaviour
     [Tooltip("How quickly to react to changes in player speed. Higher = snappier mode switches, lower = smoother transitions.")]
     [SerializeField] private float speedSampleSmoothing = 5f;
 
+    [Header("Persistent chase (horror reappearance)")]
+    [Tooltip("If true, Sophie checks for being stuck behind geometry OR lingering too close to the player. When either happens, she vanishes and reappears in front of the player. Set false to disable the horror loop entirely.")]
+    [SerializeField] private bool persistentChase = true;
+    [Tooltip("How often (seconds) the persistence check runs. Lower = more aggressive teleport behavior.")]
+    [SerializeField] private float persistenceCheckInterval = 1.5f;
+    [Tooltip("If Sophie's distance to the player doesn't shrink by at least this much within the check interval, she's considered stuck (behind a door, on the wrong side of geometry, etc.) and teleports.")]
+    [SerializeField] private float stuckProgressThreshold = 0.5f;
+    [Tooltip("If Sophie has been within this distance of the player continuously for the linger duration, she despawns and reappears. Use this to break up camping or moments when the player is cornered.")]
+    [SerializeField] private float lingerDistance = 4f;
+    [Tooltip("Seconds spent lingering close before triggering a vanish-and-reappear.")]
+    [SerializeField] private float lingerDurationBeforeRespawn = 3f;
+    [Tooltip("Brief invisibility delay before reappearing, so she 'vanishes' for a moment before showing up again.")]
+    [SerializeField] private float respawnInvisibleDelay = 0.4f;
+    [Tooltip("After reappearing, how long Sophie holds the standing pose before resuming the chase. Adds a beat of dread.")]
+    [SerializeField] private float postReappearPauseDuration = 0.8f;
+
     [Header("Events")]
     [SerializeField] private UnityEvent onPlayerCaught;
 
@@ -75,6 +91,10 @@ public class VisitorController : MonoBehaviour
     private Vector3 lastPlayerPos;
     private float smoothedPlayerSpeed = 0f;
     private bool playerPosInitialized = false;
+
+    private Coroutine persistenceRoutine;
+    private float lingerTime = 0f;
+    private float lastDistanceToPlayer = -1f;
 
     private void Awake()
     {
@@ -202,6 +222,104 @@ public class VisitorController : MonoBehaviour
         // Start walking. If adaptToPlayerSpeed is on, Update() will escalate to running
         // when the player sprints. If it's off, she stays walking until the script tells her otherwise.
         StartWalkingTowardPlayer();
+        // Kick off the persistence loop (stuck-detection + linger-respawn).
+        if (persistentChase) BeginPersistentChase();
+    }
+
+    // Start the horror persistence loop. Call this once chase is active. Safe to call
+    // multiple times — it stops any existing routine first.
+    public void BeginPersistentChase()
+    {
+        if (persistenceRoutine != null) StopCoroutine(persistenceRoutine);
+        lingerTime = 0f;
+        lastDistanceToPlayer = -1f;
+        persistenceRoutine = StartCoroutine(PersistenceLoop());
+    }
+
+    // Stop the persistence loop. Wire this to the player's escape trigger (e.g. airlock).
+    public void EndPersistentChase()
+    {
+        if (persistenceRoutine != null)
+        {
+            StopCoroutine(persistenceRoutine);
+            persistenceRoutine = null;
+        }
+    }
+
+    private IEnumerator PersistenceLoop()
+    {
+        while (persistentChase && (mode == MovementMode.Walking || mode == MovementMode.Running))
+        {
+            yield return new WaitForSeconds(persistenceCheckInterval);
+
+            if (player == null) continue;
+            // If she's already mid-teleport (renderers off), skip this iteration.
+            if (renderers != null && renderers.Length > 0 && !renderers[0].enabled) continue;
+
+            Vector3 toPlayer = player.position - transform.position;
+            toPlayer.y = 0f;
+            float currentDistance = toPlayer.magnitude;
+
+            // CHECK 1: Lingering too close (camping breakdown).
+            if (currentDistance < lingerDistance)
+            {
+                lingerTime += persistenceCheckInterval;
+                if (lingerTime >= lingerDurationBeforeRespawn)
+                {
+                    Debug.Log($"VisitorController: lingered close for {lingerTime:F1}s — vanishing and reappearing");
+                    yield return StartCoroutine(VanishAndReappear());
+                    lingerTime = 0f;
+                    lastDistanceToPlayer = -1f;
+                    continue;
+                }
+            }
+            else
+            {
+                lingerTime = 0f;
+
+                // CHECK 2: Stuck behind geometry (no progress toward player).
+                if (lastDistanceToPlayer > 0f)
+                {
+                    float progress = lastDistanceToPlayer - currentDistance;
+                    if (progress < stuckProgressThreshold)
+                    {
+                        Debug.Log($"VisitorController: stuck (progress {progress:F2}m in {persistenceCheckInterval}s) — vanishing and reappearing");
+                        yield return StartCoroutine(VanishAndReappear());
+                        lastDistanceToPlayer = -1f;
+                        continue;
+                    }
+                }
+            }
+
+            lastDistanceToPlayer = currentDistance;
+        }
+
+        persistenceRoutine = null;
+    }
+
+    private IEnumerator VanishAndReappear()
+    {
+        // Halt movement and hide renderers (keep GameObject active so coroutines keep running).
+        MovementMode resumeMode = MovementMode.Walking; // chase resumes in walking; adaptive logic upgrades if needed
+        mode = MovementMode.Idle;
+        if (anim != null)
+        {
+            anim.SetBool("Walking", false);
+            anim.SetBool("Running", false);
+        }
+        SetRenderersVisible(false);
+
+        yield return new WaitForSeconds(respawnInvisibleDelay);
+
+        // Reposition in front of player and fade back in (AppearInFrontOfPlayer handles all that).
+        AppearInFrontOfPlayer();
+
+        // Brief stare beat before resuming chase.
+        yield return new WaitForSeconds(postReappearPauseDuration);
+
+        // Resume chase. Adaptive logic in Update() will escalate to running if the player is sprinting.
+        if (resumeMode == MovementMode.Running) StartRunningTowardPlayer();
+        else StartWalkingTowardPlayer();
     }
 
     public void Disappear()
