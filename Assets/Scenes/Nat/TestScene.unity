@@ -86645,6 +86645,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1737706340}
     m_Modifications:
+    - target: {fileID: 6649558419134552556, guid: 2d3a85ecde41a8246a79669975912b74, type: 3}
+      propertyPath: m_RenderPostProcessing
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9005220659476430818, guid: 2d3a85ecde41a8246a79669975912b74, type: 3}
       propertyPath: m_LocalScale.y
       value: 0.7692308
@@ -120741,7 +120745,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8762286023885395322, guid: 9c489a8547f4d9e4387da15a4ff82c81, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -93.79
+      value: -93.8
       objectReference: {fileID: 0}
     - target: {fileID: 8762286023885395322, guid: 9c489a8547f4d9e4387da15a4ff82c81, type: 3}
       propertyPath: m_LocalRotation.w
@@ -126102,7 +126106,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8997996947095583982, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -93.9
+      value: -93.91
       objectReference: {fileID: 0}
     - target: {fileID: 8997996947095583982, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
       propertyPath: m_LocalRotation.w
@@ -136974,9 +136978,9 @@ MonoBehaviour:
   onLowHealthEntered:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1118603308}
-        m_TargetAssemblyTypeName: UnityEngine.Rendering.Volume, Unity.RenderPipelines.Core.Runtime
-        m_MethodName: set_enabled
+      - m_Target: {fileID: 1118603307}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -136989,9 +136993,9 @@ MonoBehaviour:
   onLowHealthExited:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1118603308}
-        m_TargetAssemblyTypeName: UnityEngine.Rendering.Volume, Unity.RenderPipelines.Core.Runtime
-        m_MethodName: set_enabled
+      - m_Target: {fileID: 1118603307}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -137004,9 +137008,9 @@ MonoBehaviour:
   onLowSanityEntered:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 715858810}
-        m_TargetAssemblyTypeName: UnityEngine.Rendering.Volume, Unity.RenderPipelines.Core.Runtime
-        m_MethodName: set_enabled
+      - m_Target: {fileID: 715858809}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -137019,9 +137023,9 @@ MonoBehaviour:
   onLowSanityExited:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 715858810}
-        m_TargetAssemblyTypeName: UnityEngine.Rendering.Volume, Unity.RenderPipelines.Core.Runtime
-        m_MethodName: set_enabled
+      - m_Target: {fileID: 715858809}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
