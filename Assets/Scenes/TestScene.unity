@@ -54038,7 +54038,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1596015585}
         m_TargetAssemblyTypeName: VisitorController, Assembly-CSharp
-        m_MethodName: AppearInFrontOfPlayer
+        m_MethodName: AppearInFrontAndChase
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -86127,7 +86127,7 @@ Transform:
   m_GameObject: {fileID: 1191366884}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.01, y: 0.0025199652, z: 9.66}
+  m_LocalPosition: {x: 1.01, y: 0.0025199652, z: 9.46}
   m_LocalScale: {x: 0.54033715, y: 1, z: 0.92857724}
   m_ConstrainProportionsScale: 0
   m_Children: []
