@@ -49,6 +49,9 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] private float sanityRegenRate = 2.5f;
 
     [Header("References")]
+    [Tooltip("The player's root transform — used for distance-to-Sophie checks. " +
+             "Auto-finds the GameObject tagged 'Player' if left empty.")]
+    [SerializeField] private Transform playerTransform;
     [Tooltip("Sophie's root transform. Auto-finds by name 'Sophie' if left empty.")]
     [SerializeField] private Transform sophie;
     [Tooltip("The player's camera, used for line-of-sight check. Auto-finds Camera.main if empty.")]
@@ -78,6 +81,10 @@ public class PlayerStats : MonoBehaviour
     [Tooltip("Fires once when sanity hits 0. Severe psychological breakdown — heavy distortion, chaos audio.")]
     [SerializeField] private UnityEvent onSanityBottomedOut;
 
+    [Header("Debug")]
+    [Tooltip("If true, prints a status line to the Console every second so you can confirm distances and drain are happening.")]
+    [SerializeField] private bool debugLogging = true;
+
     private float currentHealth;
     private float currentSanity;
     private float timeSinceLastDrain;
@@ -85,11 +92,19 @@ public class PlayerStats : MonoBehaviour
     private bool wasLowSanity = false;
     private bool firedHealthBottom = false;
     private bool firedSanityBottom = false;
+    private float debugLogTimer = 0f;
 
     private void Awake()
     {
         currentHealth = maxHealth;
         currentSanity = maxSanity;
+
+        if (playerTransform == null)
+        {
+            GameObject p = GameObject.FindGameObjectWithTag("Player");
+            if (p != null) playerTransform = p.transform;
+            else playerTransform = transform; // fallback to self
+        }
 
         if (sophie == null)
         {
@@ -97,17 +112,21 @@ public class PlayerStats : MonoBehaviour
             if (s != null) sophie = s.transform;
         }
         if (playerCamera == null) playerCamera = Camera.main;
+
+        Debug.Log($"PlayerStats Awake: player={(playerTransform != null ? playerTransform.name : "NULL")}, " +
+                  $"sophie={(sophie != null ? sophie.name : "NULL")}, " +
+                  $"camera={(playerCamera != null ? playerCamera.name : "NULL")}");
     }
 
     private void Update()
     {
-        if (sophie == null || playerCamera == null)
+        if (sophie == null || playerCamera == null || playerTransform == null)
         {
             UpdateUI();
             return;
         }
 
-        Vector3 toSophie = sophie.position - transform.position;
+        Vector3 toSophie = sophie.position - playerTransform.position;
         toSophie.y = 0f;
         float distanceToSophie = toSophie.magnitude;
 
@@ -172,6 +191,20 @@ public class PlayerStats : MonoBehaviour
 
         UpdateUI();
         UpdateThresholdEvents();
+
+        if (debugLogging)
+        {
+            debugLogTimer += Time.deltaTime;
+            if (debugLogTimer > 1f)
+            {
+                debugLogTimer = 0f;
+                Debug.Log($"PlayerStats: distance={distanceToSophie:F2}m | " +
+                          $"sophieVisible={sophieVisible} | " +
+                          $"health={currentHealth:F1}/{maxHealth:F0} | " +
+                          $"sanity={currentSanity:F1}/{maxSanity:F0} | " +
+                          $"player.pos={playerTransform.position} | sophie.pos={sophie.position}");
+            }
+        }
     }
 
     private void UpdateUI()
