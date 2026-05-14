@@ -13,47 +13,60 @@ MonoBehaviour:
   m_Name: 1
   m_EditorClassIdentifier: Assembly-CSharp::DialogueNode
   sophieOpeningLines:
-  - speakerName: Ai
-    text: 
-    audioClip: {fileID: 0}
+  - speakerName: AI
+    text: You may have noticed you are experiencing strange visions and that you
+      can no longer escape the space station. I did try to warn you when you arrived.
+    audioClip: {fileID: 8300000, guid: 85af8f54c6f27415a877290f2cfb4267, type: 3}
+    displayDuration: 4
+  - speakerName: AI
+    text: Worry not, because I have a solution for you. Assuming you haven't lost
+      too much sanity, you can receive an injection of mood stabilizers to return
+      you to normal so that you may leave and the visions may stop. However, if you
+      don't have much sanity left, then there's only one other option, to manually
+      remove a piece of your occipital lobe, as the former scientist tried to do
+      over there
+    audioClip: {fileID: 8300000, guid: 50cd7e4779257457eae64b8b0373d8b3, type: 3}
+    displayDuration: 6
+  - speakerName: Adam
+    text: My... occipital lobe?
+    audioClip: {fileID: 8300000, guid: fa242f33e40eb48fca6a030d5649685d, type: 3}
     displayDuration: 3
+  - speakerName: 
+    text: Yes, it is located in your brain. Just like that scientist, Dr. Jenkins
+      tried to do and failed. The procedure is incredibly dangerous and I cannot
+      guarantee your safety. You would need to do it on your own while I guide you.
+      Otherwise, the visions will increase and you will be trapped here.
+    audioClip: {fileID: 8300000, guid: aeac8033d8ef249c192b57b5a39becfd, type: 3}
+    displayDuration: 6
   choices:
-  - buttonText: 
+  - buttonText: Choose the Mood Stabilizer (Requires having over 40 Sanity)
     adamReply:
       speakerName: 
       text: 
       audioClip: {fileID: 0}
       displayDuration: 0
     sophieResponse:
-      speakerName: 
-      text: 
-      audioClip: {fileID: 0}
-      displayDuration: 0
-    nextNode: {fileID: 0}
-  - buttonText: 
+      speakerName: AI
+      text: You have chosen the mood stabilizer. It should take a moment to work.
+      audioClip: {fileID: 8300000, guid: e6d829d5226964025b3a7e628a5239df, type: 3}
+      displayDuration: 3
+    nextNode: {fileID: 11400000, guid: b72cd4a020a154b5083f34c0bfa84373, type: 2}
+  - buttonText: Choose to remove part of your brain
     adamReply:
       speakerName: 
       text: 
       audioClip: {fileID: 0}
       displayDuration: 0
     sophieResponse:
-      speakerName: 
-      text: 
-      audioClip: {fileID: 0}
-      displayDuration: 0
+      speakerName: AI
+      text: Since you have chosen to remove a part of your occipital lobe, I will
+        guide you through the process. Follow my directions when I call them out.
+        If you make more than one mistake you will die. When I call out the directions,
+        you will only have two seconds to react. Should you fail, you will die. Please
+        walk over to the table over there and we will begin.
+      audioClip: {fileID: 8300000, guid: 85f1d0b44b9424e25a07c77424335fe8, type: 3}
+      displayDuration: 6
     nextNode: {fileID: 0}
-  - buttonText: 
-    adamReply:
-      speakerName: 
-      text: 
-      audioClip: {fileID: 0}
-      displayDuration: 0
-    sophieResponse:
-      speakerName: 
-      text: 
-      audioClip: {fileID: 0}
-      displayDuration: 0
-    nextNode: {fileID: 0}
-  autoAdvanceNode: {fileID: 0}
+  autoAdvanceNode: {fileID: 11400000, guid: b72cd4a020a154b5083f34c0bfa84373, type: 2}
   isEndNode: 0
   completionEventName: 

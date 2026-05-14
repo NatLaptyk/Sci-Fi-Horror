@@ -11909,6 +11909,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4052514163483321253, guid: f496fcb1c7ee0f849947a8e6200e143d, type: 3}
   m_PrefabInstance: {fileID: 151570248}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &151570250 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7812558865364077623, guid: f496fcb1c7ee0f849947a8e6200e143d, type: 3}
+  m_PrefabInstance: {fileID: 151570248}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &154923189
 GameObject:
   m_ObjectHideFlags: 0
@@ -107336,7 +107341,43 @@ MonoBehaviour:
   entersToSkip: 0
   onPlayerEnter:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 853827982}
+        m_TargetAssemblyTypeName: DialogueManager, Assembly-CSharp
+        m_MethodName: StartDialogue
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 11400000, guid: 4de1cf660c765bc4789bfb6c322ef78e, type: 2}
+          m_ObjectArgumentAssemblyTypeName: DialogueNode, Assembly-CSharp
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1737706343}
+        m_TargetAssemblyTypeName: PlayerLock, Assembly-CSharp
+        m_MethodName: Lock
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1023047149}
+        m_TargetAssemblyTypeName: CameraLookAt, Assembly-CSharp
+        m_MethodName: ForceLookAt
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 151570250}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Transform, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onPlayerExit:
     m_PersistentCalls:
       m_Calls: []
