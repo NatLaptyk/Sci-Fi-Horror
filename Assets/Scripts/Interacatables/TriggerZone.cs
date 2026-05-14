@@ -29,6 +29,9 @@ public class TriggerZone : MonoBehaviour
              "0 = fire on first enter (default). 1 = skip first enter, fire on second. " +
              "Useful when the player has to revisit a zone before something happens.")]
     [SerializeField] private int entersToSkip = 0;
+    [Tooltip("If false, the trigger ignores enter/exit events until Arm() is called externally. " +
+             "Use to gate triggers behind story progress (e.g. only activate after Sophie's chase begins).")]
+    [SerializeField] private bool startsArmed = true;
 
     [Header("Events")]
     [Tooltip("Fires when the player first enters this zone.")]
@@ -41,6 +44,14 @@ public class TriggerZone : MonoBehaviour
     private bool hasFired = false;
     private bool hasExited = false;
     private int enterCount = 0;
+    private bool isArmed = true;
+
+    public bool IsArmed => isArmed;
+
+    private void Awake()
+    {
+        isArmed = startsArmed;
+    }
 
     private void Reset()
     {
@@ -51,6 +62,7 @@ public class TriggerZone : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (!isArmed) return;
         // Starter Assets puts the CharacterController on the root GameObject
         // which is tagged "Player" — so CompareTag works correctly.
         if (!other.CompareTag(playerTag)) return;
@@ -70,6 +82,7 @@ public class TriggerZone : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
+        if (!isArmed) return;
         if (!other.CompareTag(playerTag)) return;
         if (fireExitOnce && hasExited) return;
 
@@ -82,6 +95,18 @@ public class TriggerZone : MonoBehaviour
         hasFired = false;
         hasExited = false;
         enterCount = 0;
+    }
+
+    // Wire to a story event (e.g. Sophie's chase start) to enable this trigger.
+    public void Arm()
+    {
+        isArmed = true;
+    }
+
+    // Wire to disable a trigger after a beat is over (e.g. when player escapes).
+    public void Disarm()
+    {
+        isArmed = false;
     }
 
     // Makes the zone visible in Scene view so designers can place it.

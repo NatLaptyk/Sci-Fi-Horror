@@ -63,6 +63,17 @@ public class VisitorController : MonoBehaviour
     [Tooltip("How quickly to react to changes in player speed. Higher = snappier mode switches, lower = smoother transitions.")]
     [SerializeField] private float speedSampleSmoothing = 5f;
 
+    [Header("Contact damage (visitor-monsters)")]
+    [Tooltip("If true, this visitor drains the player's Health while within contactDamageRange. " +
+             "Use for the visitor-monsters; leave OFF for Sophie if PlayerStats already handles her.")]
+    [SerializeField] private bool dealsContactDamage = false;
+    [Tooltip("Distance under which the visitor's contact damage applies.")]
+    [SerializeField] private float contactDamageRange = 1.5f;
+    [Tooltip("Health damage per second while the player is within contactDamageRange.")]
+    [SerializeField] private float contactDamagePerSecond = 25f;
+    [Tooltip("Player stats target. Auto-finds via FindFirstObjectByType if left empty.")]
+    [SerializeField] private PlayerStats playerStats;
+
     [Header("Persistent chase (horror reappearance)")]
     [Tooltip("If true, Sophie checks for being stuck behind geometry OR lingering too close to the player. When either happens, she vanishes and reappears in front of the player. Set false to disable the horror loop entirely.")]
     [SerializeField] private bool persistentChase = true;
@@ -110,6 +121,11 @@ public class VisitorController : MonoBehaviour
         {
             GameObject p = GameObject.FindGameObjectWithTag("Player");
             if (p != null) player = p.transform;
+        }
+
+        if (dealsContactDamage && playerStats == null)
+        {
+            playerStats = FindFirstObjectByType<PlayerStats>();
         }
     }
 
@@ -390,6 +406,18 @@ public class VisitorController : MonoBehaviour
 
     private void Update()
     {
+        // Contact damage runs even in Idle mode so a stationary monster the player
+        // walks into still hurts (zombie standing in your path scenario).
+        if (dealsContactDamage && playerStats != null && player != null)
+        {
+            Vector3 toPlayerForDamage = player.position - transform.position;
+            toPlayerForDamage.y = 0f;
+            if (toPlayerForDamage.magnitude < contactDamageRange)
+            {
+                playerStats.DrainHealth(contactDamagePerSecond * Time.deltaTime);
+            }
+        }
+
         if (mode == MovementMode.Idle) return;
 
         Transform target = walkTarget != null ? walkTarget : player;
