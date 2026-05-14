@@ -16371,6 +16371,7 @@ MonoBehaviour:
   fireOnce: 0
   fireExitOnce: 0
   entersToSkip: 0
+  startsArmed: 1
   onPlayerEnter:
     m_PersistentCalls:
       m_Calls:
@@ -17782,6 +17783,7 @@ MonoBehaviour:
   fireOnce: 1
   fireExitOnce: 0
   entersToSkip: 0
+  startsArmed: 1
   onPlayerEnter:
     m_PersistentCalls:
       m_Calls:
@@ -23167,6 +23169,7 @@ MonoBehaviour:
   fireOnce: 0
   fireExitOnce: 0
   entersToSkip: 0
+  startsArmed: 1
   onPlayerEnter:
     m_PersistentCalls:
       m_Calls:
@@ -28053,6 +28056,7 @@ MonoBehaviour:
   fireOnce: 0
   fireExitOnce: 0
   entersToSkip: 0
+  startsArmed: 1
   onPlayerEnter:
     m_PersistentCalls:
       m_Calls:
@@ -35725,6 +35729,7 @@ MonoBehaviour:
   fireOnce: 1
   fireExitOnce: 0
   entersToSkip: 0
+  startsArmed: 1
   onPlayerEnter:
     m_PersistentCalls:
       m_Calls:
@@ -45499,6 +45504,7 @@ MonoBehaviour:
   fireOnce: 1
   fireExitOnce: 0
   entersToSkip: 0
+  startsArmed: 1
   onPlayerEnter:
     m_PersistentCalls:
       m_Calls:
@@ -50267,6 +50273,11 @@ MonoBehaviour:
   interactRange: 7
   playerTag: Player
   fireOnce: 1
+  useRaycastSelection: 0
+  raycastDistance: 3
+  raycastLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
   interactPromptUI: {fileID: 940147115}
   onInteract:
     m_PersistentCalls:
@@ -69101,7 +69112,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1cf10886e5cce3442846010651114a95, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -99.55719
+      value: -99.556
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1cf10886e5cce3442846010651114a95, type: 3}
       propertyPath: m_LocalPosition.y
@@ -71024,6 +71035,10 @@ MonoBehaviour:
   adaptToPlayerSpeed: 1
   runSpeedThreshold: 3
   speedSampleSmoothing: 5
+  dealsContactDamage: 0
+  contactDamageRange: 1.5
+  contactDamagePerSecond: 25
+  playerStats: {fileID: 0}
   persistentChase: 1
   persistenceCheckInterval: 1.5
   stuckProgressThreshold: 0.5
@@ -75507,6 +75522,7 @@ MonoBehaviour:
   fireOnce: 1
   fireExitOnce: 0
   entersToSkip: 0
+  startsArmed: 1
   onPlayerEnter:
     m_PersistentCalls:
       m_Calls:
@@ -75646,6 +75662,11 @@ MonoBehaviour:
   interactRange: 4
   playerTag: Player
   fireOnce: 1
+  useRaycastSelection: 0
+  raycastDistance: 3
+  raycastLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
   interactPromptUI: {fileID: 376271176}
   onInteract:
     m_PersistentCalls:
@@ -79421,6 +79442,7 @@ MonoBehaviour:
   fireOnce: 1
   fireExitOnce: 0
   entersToSkip: 0
+  startsArmed: 1
   onPlayerEnter:
     m_PersistentCalls:
       m_Calls: []
@@ -80400,6 +80422,7 @@ MonoBehaviour:
   fireOnce: 1
   fireExitOnce: 0
   entersToSkip: 0
+  startsArmed: 1
   onPlayerEnter:
     m_PersistentCalls:
       m_Calls: []
@@ -84034,6 +84057,7 @@ MonoBehaviour:
   fireOnce: 1
   fireExitOnce: 0
   entersToSkip: 0
+  startsArmed: 1
   onPlayerEnter:
     m_PersistentCalls:
       m_Calls:
@@ -88268,6 +88292,7 @@ MonoBehaviour:
   fireOnce: 0
   fireExitOnce: 1
   entersToSkip: 0
+  startsArmed: 1
   onPlayerEnter:
     m_PersistentCalls:
       m_Calls:
@@ -91824,6 +91849,7 @@ MonoBehaviour:
   fireOnce: 0
   fireExitOnce: 0
   entersToSkip: 0
+  startsArmed: 1
   onPlayerEnter:
     m_PersistentCalls:
       m_Calls:
@@ -94986,6 +95012,7 @@ MonoBehaviour:
   fireOnce: 1
   fireExitOnce: 0
   entersToSkip: 0
+  startsArmed: 1
   onPlayerEnter:
     m_PersistentCalls:
       m_Calls:
@@ -107339,6 +107366,7 @@ MonoBehaviour:
   fireOnce: 1
   fireExitOnce: 0
   entersToSkip: 0
+  startsArmed: 1
   onPlayerEnter:
     m_PersistentCalls:
       m_Calls:
@@ -117374,6 +117402,10 @@ MonoBehaviour:
   adaptToPlayerSpeed: 1
   runSpeedThreshold: 3
   speedSampleSmoothing: 5
+  dealsContactDamage: 0
+  contactDamageRange: 1.5
+  contactDamagePerSecond: 25
+  playerStats: {fileID: 0}
   persistentChase: 1
   persistenceCheckInterval: 1.5
   stuckProgressThreshold: 0.5
@@ -120354,6 +120386,10 @@ MonoBehaviour:
   adaptToPlayerSpeed: 1
   runSpeedThreshold: 3
   speedSampleSmoothing: 5
+  dealsContactDamage: 0
+  contactDamageRange: 1.5
+  contactDamagePerSecond: 25
+  playerStats: {fileID: 0}
   persistentChase: 1
   persistenceCheckInterval: 1.5
   stuckProgressThreshold: 0.5
@@ -129313,6 +129349,7 @@ MonoBehaviour:
   fireOnce: 0
   fireExitOnce: 0
   entersToSkip: 0
+  startsArmed: 1
   onPlayerEnter:
     m_PersistentCalls:
       m_Calls:
@@ -142885,6 +142922,7 @@ MonoBehaviour:
   fireOnce: 1
   fireExitOnce: 0
   entersToSkip: 0
+  startsArmed: 1
   onPlayerEnter:
     m_PersistentCalls:
       m_Calls:

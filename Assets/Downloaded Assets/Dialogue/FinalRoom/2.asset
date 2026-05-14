@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd02ae3f5b980f24d8176e342f9aa382, type: 3}
+  m_Name: 2
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueNode
+  sophieOpeningLines:
+  - speakerName: Adam
+    text: Oh, I'm coming to. I'm feeling so much better now.
+    audioClip: {fileID: 8300000, guid: 3d7d8d13762424debafdccfc9cf20d82, type: 3}
+    displayDuration: 3
+  - speakerName: AI
+    text: Yes. The lights never turned out. It was all in your mind. I recommend
+      you to leave the lab immediately, because the mood stabilizers will only work
+      for but a moment.
+    audioClip: {fileID: 8300000, guid: 5b1f64de4aa23420fa8eba36773cb4f7, type: 3}
+    displayDuration: 3
+  - speakerName: Adam
+    text: Got it I'll leave right away. Thank you. Thank you so much.
+    audioClip: {fileID: 8300000, guid: fc0b615f4c49f4c9c91bef6e8f308a81, type: 3}
+    displayDuration: 2
+  - speakerName: AI
+    text: You are very welcome.
+    audioClip: {fileID: 8300000, guid: d05e6c727541a43aa843d3665b5a2393, type: 3}
+    displayDuration: 3
+  choices: []
+  autoAdvanceNode: {fileID: 0}
+  isEndNode: 0
+  completionEventName: 
