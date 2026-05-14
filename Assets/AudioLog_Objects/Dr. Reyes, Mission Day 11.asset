@@ -10,12 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5d5402e25dfb368418a5ea7d85c2a851, type: 3}
-  m_Name: AudioLog_1
+  m_Name: Dr. Reyes, Mission Day 11
   m_EditorClassIdentifier: Assembly-CSharp::AudioLog
   entryTitle: "Station Log \u2014 Dr. Reyes, Mission Day 11"
   audioClip: {fileID: 8300000, guid: f9e92a6951db24642b6d339ee5991747, type: 3}
-  transcript: "\"The Ocean doesn't attack. It gives. It gives you exactly what you
-    cannot bear to see. Wiliams my firend and colleague from my first mission walked
-    into the lab today and he's been dead for three years. He knew things about our
-    last conversation that I never told anyone. I ran the tissue scans \u2014 there's
-    no human biology there. Just\u2026 something that learned to be her from my grief.\""
+  transcript: "The Ocean doesn't attack. It gives. It gives you exactly what you
+    cannot bear to see. Wiliams my close firend and colleague from my first mission
+    walked into the lab today and he's been dead for three years. He knew things
+    about our last conversation that I never told anyone. I ran the tissue scans
+    \u2014 there's no human biology there. Just\u2026 something that learned to be
+    her from my grief."

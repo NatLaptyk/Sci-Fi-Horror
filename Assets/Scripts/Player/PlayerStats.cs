@@ -251,4 +251,25 @@ public class PlayerStats : MonoBehaviour
     public float Sanity => currentSanity;
     public float HealthNormalized => currentHealth / maxHealth;
     public float SanityNormalized => currentSanity / maxSanity;
+
+    // External damage hooks — wire from UnityEvents (puzzle fails, scripted scares, etc.).
+    public void DrainSanity(float amount)
+    {
+        currentSanity = Mathf.Clamp(currentSanity - amount, 0f, maxSanity);
+    }
+
+    public void DrainHealth(float amount)
+    {
+        currentHealth = Mathf.Clamp(currentHealth - amount, 0f, maxHealth);
+    }
+
+    public void RestoreSanity(float amount)
+    {
+        currentSanity = Mathf.Clamp(currentSanity + amount, 0f, maxSanity);
+    }
+
+    public void RestoreHealth(float amount)
+    {
+        currentHealth = Mathf.Clamp(currentHealth + amount, 0f, maxHealth);
+    }
 }

@@ -39,6 +39,10 @@ public class AudioLogPlayer : MonoBehaviour
     [SerializeField] private UnityEvent onLogStarted;
     [SerializeField] private UnityEvent onLogEnded;
 
+    // Fires with the specific AudioLog when playback starts. Used by PDAManager
+    // to mark a log as "discovered" the moment the player triggers it.
+    public event System.Action<AudioLog> OnLogStartedTyped;
+
     // Fires with the specific AudioLog that just finished. Used by AudioLogTrigger
     // so each log's trigger can react to ITS own log finishing (not all logs).
     public event System.Action<AudioLog> OnLogEndedTyped;
@@ -120,6 +124,7 @@ public class AudioLogPlayer : MonoBehaviour
         isPlaying = true;
         currentLog = log;
         onLogStarted?.Invoke();
+        OnLogStartedTyped?.Invoke(log);
 
         if (audioLogUI != null) audioLogUI.Show(log.entryTitle, log.transcript);
 
