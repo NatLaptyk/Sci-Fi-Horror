@@ -81,6 +81,10 @@ public class PlayerStats : MonoBehaviour
     [Tooltip("Fires once when sanity hits 0. Severe psychological breakdown — heavy distortion, chaos audio.")]
     [SerializeField] private UnityEvent onSanityBottomedOut;
 
+    [Header("Drain master switch")]
+    [Tooltip("If false, no proximity drain or regeneration runs. Use to disable stat changes during scripted segments (e.g. the bedroom dialogue) and arm them via EnableDrain() when the chase begins.")]
+    [SerializeField] private bool drainEnabled = false;
+
     [Header("Debug")]
     [Tooltip("If true, prints a status line to the Console every second so you can confirm distances and drain are happening.")]
     [SerializeField] private bool debugLogging = true;
@@ -150,6 +154,13 @@ public class PlayerStats : MonoBehaviour
                 // Nothing in the way at all.
                 sophieVisible = true;
             }
+        }
+
+        // Master switch: skip all proximity drain/regen if disabled.
+        if (!drainEnabled)
+        {
+            UpdateUI();
+            return;
         }
 
         // === HEALTH update ===
@@ -245,6 +256,12 @@ public class PlayerStats : MonoBehaviour
             firedSanityBottom = false;
         }
     }
+
+    // Master drain toggle. Wire EnableDrain() to your chase-start event (e.g. Jenkins's
+    // onThisLogFinished) so stats don't move during the bedroom dialogue.
+    public void EnableDrain() { drainEnabled = true; }
+    public void DisableDrain() { drainEnabled = false; }
+    public bool DrainEnabled => drainEnabled;
 
     // Public API for other scripts.
     public float Health => currentHealth;

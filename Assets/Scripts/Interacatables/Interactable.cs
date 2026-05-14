@@ -26,6 +26,15 @@ public class Interactable : MonoBehaviour
     [Tooltip("If true, only fires the first time. If false, can be interacted with repeatedly.")]
     [SerializeField] private bool fireOnce = true;
 
+    [Header("Selection mode")]
+    [Tooltip("If true, uses a camera raycast — player must LOOK AT the interactable to trigger it. " +
+             "Required for clustered objects like keypad buttons where distance-based selection would fire all of them at once.")]
+    [SerializeField] private bool useRaycastSelection = false;
+    [Tooltip("Max raycast distance for look-based selection.")]
+    [SerializeField] private float raycastDistance = 3f;
+    [Tooltip("Layers the raycast checks. Default = Everything.")]
+    [SerializeField] private LayerMask raycastLayers = ~0;
+
     [Header("Prompt (optional)")]
     [SerializeField] private GameObject interactPromptUI;
 
@@ -49,9 +58,31 @@ public class Interactable : MonoBehaviour
         if (player == null) return;
         if (fireOnce && hasFired) return;
 
-        float distance = Vector3.Distance(transform.position, player.position);
         bool wasInRange = playerInRange;
-        playerInRange = distance <= interactRange;
+
+        if (useRaycastSelection)
+        {
+            // Raycast from the camera: only one interactable can be "looked at" at a time.
+            playerInRange = false;
+            Camera cam = Camera.main;
+            if (cam != null)
+            {
+                Ray ray = new Ray(cam.transform.position, cam.transform.forward);
+                if (Physics.Raycast(ray, out RaycastHit hit, raycastDistance, raycastLayers, QueryTriggerInteraction.Collide))
+                {
+                    if (hit.collider.gameObject == gameObject || hit.collider.transform.IsChildOf(transform))
+                    {
+                        playerInRange = true;
+                    }
+                }
+            }
+        }
+        else
+        {
+            // Distance-based: any interactable within range can be triggered.
+            float distance = Vector3.Distance(transform.position, player.position);
+            playerInRange = distance <= interactRange;
+        }
 
         if (playerInRange != wasInRange && interactPromptUI != null)
         {
