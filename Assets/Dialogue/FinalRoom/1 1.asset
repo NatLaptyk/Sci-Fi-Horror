@@ -13,12 +13,17 @@ MonoBehaviour:
   m_Name: 1 1
   m_EditorClassIdentifier: Assembly-CSharp::DialogueNode
   sophieOpeningLines:
+  - speakerName: Adam
+    text: My... occipital lobe?
+    audioClip: {fileID: 8300000, guid: fa242f33e40eb48fca6a030d5649685d, type: 3}
+    displayDuration: 2
   - speakerName: AI
-    text: The procedure is incredibly dangerous and I cannot guarantee your safety.
-      You would need to do it on your own while I guide you. Otherwise, the visions
-      will increase and you will be trapped here.
-    audioClip: {fileID: 0}
-    displayDuration: 3
+    text: Yes, it is located in your brain. Just like that scientist, Dr. Jenkins
+      tried to do and failed. The procedure is incredibly dangerous and I cannot
+      guarantee your safety. You would need to do it on your own while I guide you.
+      Otherwise, the visions will increase and you will be trapped here.
+    audioClip: {fileID: 8300000, guid: aeac8033d8ef249c192b57b5a39becfd, type: 3}
+    displayDuration: 6
   choices:
   - buttonText: Choose the Mood Stabilizer (Requires having over 40 Sanity)
     adamReply:

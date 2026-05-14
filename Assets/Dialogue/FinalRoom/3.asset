@@ -12,11 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd02ae3f5b980f24d8176e342f9aa382, type: 3}
   m_Name: 3
   m_EditorClassIdentifier: Assembly-CSharp::DialogueNode
-  sophieOpeningLines:
-  - speakerName: Sophie
-    text: Adam! Opne.The. Door.
-    audioClip: {fileID: 8300000, guid: 8a4f950f90053be43a9b7e9cd52ea637, type: 3}
-    displayDuration: 3
+  sophieOpeningLines: []
   choices: []
   autoAdvanceNode: {fileID: 0}
   isEndNode: 1
