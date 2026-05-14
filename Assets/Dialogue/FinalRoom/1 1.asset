@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd02ae3f5b980f24d8176e342f9aa382, type: 3}
+  m_Name: 1 1
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueNode
+  sophieOpeningLines:
+  - speakerName: AI
+    text: The procedure is incredibly dangerous and I cannot guarantee your safety.
+      You would need to do it on your own while I guide you. Otherwise, the visions
+      will increase and you will be trapped here.
+    audioClip: {fileID: 0}
+    displayDuration: 3
+  choices:
+  - buttonText: Choose the Mood Stabilizer (Requires having over 40 Sanity)
+    adamReply:
+      speakerName: 
+      text: 
+      audioClip: {fileID: 0}
+      displayDuration: 0
+    sophieResponse:
+      speakerName: AI
+      text: You have chosen the mood stabilizer. It should take a moment to work.
+      audioClip: {fileID: 8300000, guid: e6d829d5226964025b3a7e628a5239df, type: 3}
+      displayDuration: 3
+    nextNode: {fileID: 11400000, guid: b72cd4a020a154b5083f34c0bfa84373, type: 2}
+  - buttonText: Choose to remove part of your brain
+    adamReply:
+      speakerName: 
+      text: 
+      audioClip: {fileID: 0}
+      displayDuration: 0
+    sophieResponse:
+      speakerName: AI
+      text: Since you have chosen to remove a part of your occipital lobe, I will
+        guide you through the process. Follow my directions when I call them out.
+        If you make more than one mistake you will die. When I call out the directions,
+        you will only have two seconds to react. Should you fail, you will die. Please
+        walk over to the table over there and we will begin.
+      audioClip: {fileID: 8300000, guid: 85f1d0b44b9424e25a07c77424335fe8, type: 3}
+      displayDuration: 6
+    nextNode: {fileID: 11400000, guid: 5f59b572d148f4416802f85965e875bf, type: 2}
+  autoAdvanceNode: {fileID: 0}
+  isEndNode: 0
+  completionEventName: 

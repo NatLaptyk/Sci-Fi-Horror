@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fd02ae3f5b980f24d8176e342f9aa382, type: 3}
-  m_Name: 1
+  m_Name: 1 2
   m_EditorClassIdentifier: Assembly-CSharp::DialogueNode
   sophieOpeningLines:
   - speakerName: AI
@@ -24,10 +24,19 @@ MonoBehaviour:
       you to normal so that you may leave and the visions may stop. However, if you
       don't have much sanity left, then there's only one other option, to manually
       remove a piece of your occipital lobe, as the former scientist tried to do
-      over there.
+      over there
     audioClip: {fileID: 8300000, guid: 50cd7e4779257457eae64b8b0373d8b3, type: 3}
+    displayDuration: 6
+  - speakerName: Adam
+    text: My... occipital lobe?
+    audioClip: {fileID: 8300000, guid: fa242f33e40eb48fca6a030d5649685d, type: 3}
+    displayDuration: 3
+  - speakerName: AI
+    text: 'Yes, it is located in your brain. Just like that scientist, Dr. Jenkins
+      tried to do and failed. '
+    audioClip: {fileID: 8300000, guid: aeac8033d8ef249c192b57b5a39becfd, type: 3}
     displayDuration: 6
   choices: []
   autoAdvanceNode: {fileID: 0}
-  isEndNode: 1
-  completionEventName: LookAtJenkins
+  isEndNode: 0
+  completionEventName: 

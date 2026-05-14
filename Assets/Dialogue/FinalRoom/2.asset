@@ -33,5 +33,5 @@ MonoBehaviour:
     displayDuration: 3
   choices: []
   autoAdvanceNode: {fileID: 0}
-  isEndNode: 0
-  completionEventName: 
+  isEndNode: 1
+  completionEventName: EndGame
