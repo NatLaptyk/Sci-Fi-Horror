@@ -60,6 +60,9 @@ public class SlidingDoor : MonoBehaviour
     // Public API: call from UnityEvents, other scripts, whatever.
     public void Open()
     {
+        Debug.Log($"SlidingDoor.Open() called on {name}. isLocked={isLocked}, isOpen={isOpen}, " +
+                  $"closedPos={closedPosition}, openPos={openPosition}, currentPos={transform.localPosition}\n" +
+                  $"STACK:\n{System.Environment.StackTrace}");
         if (isLocked)
         {
             PlayClip(lockedClip);
