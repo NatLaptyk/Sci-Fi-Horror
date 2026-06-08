@@ -4,16 +4,6 @@ using UnityEngine.Events;
 
 // Fires an event when ALL of a configurable set of AudioLogs have been Listened
 // (according to PDAManager). Use to gate door unlocks behind narrative progress.
-//
-// Setup:
-//  1. Create an empty GameObject (e.g. "JenkinsRoomGate").
-//  2. Attach this script.
-//  3. In the Inspector, populate "Required Logs" with the AudioLogs that must
-//     be listened to before the gate opens.
-//  4. Wire onAllListened to SlidingDoor.Unlock + SlidingDoor.Open on the gated door.
-//
-// Re-checks every time PDAManager fires OnStateChanged (after any PDA is
-// marked discovered or listened). Fires the event once and never again.
 
 public class PDAGate : MonoBehaviour
 {

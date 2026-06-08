@@ -7,13 +7,6 @@ using UnityEngine.Events;
 // Use case: a TriggerZone fires on player enter, but you want a 2-second pause
 // before the next thing happens. Call FireAfter(2) on this script from the
 // TriggerZone's onPlayerEnter, and put the delayed action in the onDelayElapsed event.
-//
-// Setup:
-//  1. Create an empty GameObject named "Delay_2sec" (or descriptive).
-//  2. Attach this script.
-//  3. Wire the TriggerZone's onPlayerEnter → DelayedEvent.FireAfter(2).
-//  4. Wire DelayedEvent's onDelayElapsed → the actual delayed action
-//     (e.g. DialogueManager.StartDialogue, HeadTracker.StartSpin360, etc.)
 
 public class DelayedEvent : MonoBehaviour
 {

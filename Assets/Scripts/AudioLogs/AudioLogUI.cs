@@ -3,17 +3,6 @@ using TMPro;
 
 // UI panel for an audio log / journal entry. Owns the visuals only —
 // playback timing is driven by AudioLogPlayer.
-//
-// Setup:
-//  1. Create a Canvas (Render Mode: Screen Space - Overlay).
-//  2. Inside it, create a Panel with three TextMeshProUGUI children:
-//       - headerText        → static label, e.g. "JOURNAL ENTRY"
-//       - entryTitleText    → set per log (e.g. "Entry 03 — Reactor Bay")
-//       - transcriptText    → the body text revealed letter-by-letter
-//     Plus an optional "press [E] to dismiss" hint.
-//  3. Attach this script to the Canvas (or the panel root) and wire up
-//     the references in the inspector.
-//  4. Drag the Canvas onto AudioLogPlayer.audioLogUI.
 
 public class AudioLogUI : MonoBehaviour
 {

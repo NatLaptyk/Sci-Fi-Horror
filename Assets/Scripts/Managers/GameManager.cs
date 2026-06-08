@@ -3,13 +3,6 @@ using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 // Tracks keycards collected, exposes win/lose state, handles scene reset.
-//
-// Setup:
-//  1. Create an empty GameObject named "GameManager" in your scene.
-//  2. Attach this script.
-//  3. Wire each Pickup's onPickup event to call GameManager.AddKey.
-//  4. Wire the airlock TriggerZone's onPlayerEnter to GameManager.TryEscape.
-//  5. Wire VisitorController.onPlayerCaught to GameManager.GameOver.
 
 public class GameManager : MonoBehaviour
 {

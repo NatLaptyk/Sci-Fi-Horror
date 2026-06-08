@@ -1,22 +1,8 @@
 using UnityEngine;
 
 // PlayerLock — a simple wrapper that disables/enables player movement and look
-// in one call. Use this instead of trying to wire individual script.enabled
+// in one call. Better than trying to wire individual script.enabled
 // toggles in UnityEvents (which is fiddly and easy to misconfigure).
-//
-// Setup:
-//  1. Attach this script to the same GameObject as FirstPersonController
-//     (probably PlayerCapsule).
-//  2. The script auto-finds FirstPersonController and StarterAssetsInputs by
-//     name on the same GameObject.
-//  3. From any UnityEvent, call PlayerLock.Lock() to freeze player.
-//     Call PlayerLock.Unlock() to restore control.
-//
-// Why this is better than direct script.enabled toggling:
-//  - One method to call instead of 2-3 different actions per event.
-//  - Centralized: if Starter Assets renames things, you only fix one script.
-//  - Adds Debug.Log so you can verify it's actually being called.
-//  - Keeps cursor lock state correct.
 
 public class PlayerLock : MonoBehaviour
 {

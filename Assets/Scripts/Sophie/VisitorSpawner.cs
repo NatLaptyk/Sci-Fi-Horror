@@ -11,20 +11,6 @@ using UnityEngine.Events;
 //  - No GC spikes during gameplay
 //  - All visitors are scene objects (debuggable in editor)
 //  - UnityEvent references to specific visitors stay valid
-//
-// Setup:
-//  1. Pre-place 3-5 VisitorController GameObjects in the level (clones of the
-//     Sophie rig, or different meshes — the chase logic is the same).
-//  2. On EACH visitor: check 'Deals Contact Damage' and configure the range
-//     and per-second damage rate. Check 'Adapt To Player Speed' if you want
-//     them to walk/run with the player. Disable 'Persistent Chase' on visitor
-//     monsters so they don't teleport — that's Sophie's signature behavior.
-//  3. Each visitor's GameObject must be ACTIVE at scene start (so UnityEvents
-//     can reference them). Their Awake disables renderers automatically.
-//  4. Place empty GameObjects around the level as spawn points (e.g.
-//     SpawnPoint_LabCorner, SpawnPoint_Storage, etc.).
-//  5. Create one "VisitorSpawner" GameObject. Drag visitors into visitorPool,
-//     spawn points into spawnPoints, set min/max interval, hit Play.
 
 public class VisitorSpawner : MonoBehaviour
 {

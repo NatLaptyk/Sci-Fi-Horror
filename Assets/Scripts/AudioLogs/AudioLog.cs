@@ -1,14 +1,5 @@
 using UnityEngine;
 
-// One audio log / journal entry. ScriptableObject asset.
-//
-// Create via: Assets > Create > Solaris > Audio Log
-//
-// Fields:
-//  - entryTitle:  shown as the subtitle ("Entry 03 — Reactor Bay").
-//  - audioClip:   the recorded voice. Required for the typewriter sync.
-//  - transcript:  full text. Reveals over the length of audioClip.
-
 [CreateAssetMenu(fileName = "AudioLog", menuName = "Solaris/Audio Log")]
 public class AudioLog : ScriptableObject
 {

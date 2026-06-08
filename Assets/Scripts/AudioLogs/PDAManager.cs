@@ -7,13 +7,6 @@ using UnityEngine;
 // Subscribes to AudioLogPlayer's typed start/end events. When the player triggers
 // a PDA, the matching entry flips to Discovered; when the log finishes, it flips
 // to Listened. Fires OnStateChanged so PDAStatusUI can repaint the icons.
-//
-// Setup:
-//  1. Create an empty GameObject "PDAManager" in the scene.
-//  2. Attach this script.
-//  3. In the Inspector, set the "Pdas" list size to 5.
-//  4. For each slot, drag the matching AudioLog ScriptableObject into the Log field.
-//  5. The PDAManager will register with AudioLogPlayer automatically at runtime.
 
 public class PDAManager : MonoBehaviour
 {

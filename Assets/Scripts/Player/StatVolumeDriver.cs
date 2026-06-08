@@ -10,13 +10,6 @@ using UnityEngine.Rendering;
 //
 // Use case: smooth psychological breakdown instead of binary threshold toggling.
 // At sanity 80, vignette starts faintly. At 40, it's noticeable. At 0, full effect.
-//
-// Setup:
-//  1. Configure your Volume with the FULL-INTENSITY values you want at stat=0.
-//  2. Make sure the Volume GameObject is ACTIVE in the Hierarchy (this script
-//     manages the weight, not the active state).
-//  3. Disable any previous PlayerStats event wiring that was toggling this
-//     Volume's GameObject SetActive — that pattern is replaced by this script.
 
 [RequireComponent(typeof(Volume))]
 public class StatVolumeDriver : MonoBehaviour

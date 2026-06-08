@@ -2,15 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 // Flashlight with battery drain. Unity 6 / Input System version.
-//
-// Attach to the player (or any GameObject) and assign a child Light component
-// (type: Spot) to the flashlightLight field.
-//
-// Default: press F to toggle. You can rebind in the Inspector by changing toggleKey.
-// Battery drains while on, regenerates slowly while off (regenRate = 0 for harder mode).
-//
-// Public Battery property (0..1) is available for UI bars.
-
+// Light type: Spot
 public class FlashlightController : MonoBehaviour
 {
     [Header("Light")]

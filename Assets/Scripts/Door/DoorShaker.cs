@@ -13,15 +13,6 @@ using UnityEngine.Events;
 //  - The door's local position offsets randomly within a small radius for each shake.
 //  - Each shake has an audio clip played in sync.
 //  - Optional dent decals appear at stage 3 to visually escalate the damage.
-//
-// Setup:
-//  1. Attach this to the door GameObject (the same one with SlidingDoor or just a static mesh).
-//  2. Optional: assign Audio Source + the three intensity clip arrays.
-//  3. Optional: drag dent visual GameObjects (decals or quads) into dentVisuals.
-//     Start them disabled. Stage 3 enables them one by one.
-//  4. From a TriggerZone or DialogueManager named-event, call:
-//       PlayStage1(), then PlayStage2(), then PlayStage3() in sequence.
-//     Or call PlayFullSequence() to run all three back-to-back.
 
 public class DoorShaker : MonoBehaviour
 {

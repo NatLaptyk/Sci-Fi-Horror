@@ -6,17 +6,6 @@ using UnityEngine;
 // How it works: two sets of GameObjects — "normal" and "hacked" — placed in the same
 // world positions. When the player crosses a trigger zone and isn't looking back,
 // swap them silently. When they turn around, the world is different.
-//
-// Setup:
-//  1. Attach this to an empty GameObject named "PerceptionHack_Corridor1".
-//  2. Drag the normal-state objects (original photos, lab coat) into normalObjects.
-//  3. Drag the hacked-state objects (changed photos, silhouette) into hackedObjects.
-//     Both sets in same world positions. hackedObjects start inactive.
-//  4. Wire a TriggerZone's onPlayerEnter to call TriggerHack() on this script.
-//
-// Compatible with Unity Starter Assets: the MainCamera lives as a child of the player rig,
-// so Camera.main still returns the correct transform. If you renamed the tag, drag your
-// camera into playerCamera manually.
 
 public class PerceptionHack : MonoBehaviour
 {

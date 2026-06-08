@@ -5,12 +5,6 @@ using UnityEngine.UI;
 //
 // Each Image in the iconSlots array maps 1:1 to a PDA entry in PDAManager.Entries.
 // Three visual states are applied via color (sprite can be the same for all).
-//
-// Setup:
-//  1. Build the UI Canvas with 5 child Image components (or however many PDAs).
-//  2. Attach this script to a UI GameObject (the Canvas, or a child).
-//  3. Drag the 5 Images into iconSlots in order.
-//  4. The script auto-finds PDAManager.Instance at runtime.
 
 public class PDAStatusUI : MonoBehaviour
 {

@@ -6,16 +6,6 @@ using UnityEngine.InputSystem;
 // Singleton that plays an AudioLog: shows the journal panel, plays the
 // audio clip, reveals the transcript in sync, and lets the player
 // dismiss the entry early.
-//
-// Wire it up like DialogueManager:
-//  1. Create an empty GameObject "AudioLogPlayer" in the scene.
-//  2. Attach this script. An AudioSource is auto-added.
-//  3. Drag the AudioLogUI canvas into audioLogUI.
-//  4. From an Interactable's onInteract, call AudioLogPlayer.Play(yourLog).
-//
-// Trigger from Interactable:
-//   onInteract → AudioLogPlayer.Instance.Play(audioLogAsset)
-// or use the convenience component AudioLogTrigger if you prefer.
 
 public class AudioLogPlayer : MonoBehaviour
 {

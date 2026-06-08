@@ -1,16 +1,6 @@
 using UnityEngine;
 
 // One full turn of dialogue.
-//
-// Structure:
-//  1. Sophie speaks her opening line (one or more lines played in sequence).
-//  2. The three response buttons appear.
-//  3. Player picks one → Adam's reply plays, then Sophie's response.
-//  4. Transitions to the next DialogueNode.
-//
-// Created via: Assets → Create → Solaris → Dialogue Node.
-// Each turn of the conversation is one asset. Drag them into each other's
-// "Next Node" fields to build the conversation flow.
 
 [CreateAssetMenu(fileName = "NewDialogueNode", menuName = "Solaris/Dialogue Node")]
 public class DialogueNode : ScriptableObject

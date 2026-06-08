@@ -5,13 +5,6 @@ using UnityEngine;
 // Interactable.onInteract → KeypadButton.Press, and reports up to the
 // parent PuzzleKeypad. Also handles its own visual feedback (flash on
 // correct/wrong, persistent lit state for in-progress correct presses).
-//
-// Setup:
-//  1. Attach to a button GameObject (cube, mesh, whatever the player sees).
-//  2. Assign the parent PuzzleKeypad in the Inspector.
-//  3. Optionally assign the button's MeshRenderer for color feedback.
-//  4. The button must ALSO have an Interactable script and a Collider so the
-//     player can press E to trigger it. Wire Interactable.onInteract → KeypadButton.Press.
 
 public class KeypadButton : MonoBehaviour
 {

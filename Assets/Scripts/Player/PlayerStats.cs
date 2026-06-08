@@ -14,7 +14,6 @@ using UnityEngine.UI;
 //         Represents psychological dread.
 //
 // Threshold events fire when bars cross lowThreshold or hit zero. Wire those
-// to Volume effects, audio sources, and Sophie's aggression toggle in the Inspector.
 
 public class PlayerStats : MonoBehaviour
 {

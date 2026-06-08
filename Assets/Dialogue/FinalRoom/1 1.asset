@@ -36,7 +36,7 @@ MonoBehaviour:
       text: You have chosen the mood stabilizer. It should take a moment to work.
       audioClip: {fileID: 8300000, guid: e6d829d5226964025b3a7e628a5239df, type: 3}
       displayDuration: 3
-    nextNode: {fileID: 11400000, guid: b72cd4a020a154b5083f34c0bfa84373, type: 2}
+    nextNode: {fileID: 11400000, guid: 356f4fd6c28154b30bb383f16d4a97ef, type: 2}
   - buttonText: Choose to remove part of your brain
     adamReply:
       speakerName: 
@@ -52,7 +52,7 @@ MonoBehaviour:
         walk over to the table over there and we will begin.
       audioClip: {fileID: 8300000, guid: 85f1d0b44b9424e25a07c77424335fe8, type: 3}
       displayDuration: 6
-    nextNode: {fileID: 11400000, guid: 5f59b572d148f4416802f85965e875bf, type: 2}
+    nextNode: {fileID: 11400000, guid: b9aff2967f78243d883a1fd74f8cbd49, type: 2}
   autoAdvanceNode: {fileID: 0}
   isEndNode: 0
   completionEventName: 

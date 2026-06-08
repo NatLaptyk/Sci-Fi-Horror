@@ -1,14 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-// Tiny helper: holds a reference to an AudioLog asset and exposes a
-// no-arg Play() method. Drop this on the same GameObject as your
-// Interactable / Pickup, then wire onInteract → AudioLogTrigger.Play.
-//
-// Also fires onThisLogFinished when ITS specific log ends (audio
-// finishes playing or player presses dismiss). Use this to wire
-// per-log consequences without affecting other audio logs.
-
 public class AudioLogTrigger : MonoBehaviour
 {
     [SerializeField] private AudioLog log;

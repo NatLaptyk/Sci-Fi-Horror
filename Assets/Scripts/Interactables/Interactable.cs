@@ -9,12 +9,6 @@ using UnityEngine.InputSystem;
 //  - Try the zipper on Sophie's back (interaction reveals the wrongness).
 //  - Examine an object without removing it from the world.
 //  - One-time interactions that should still leave the object in place.
-//
-// Setup:
-//  1. Attach to any object the player should interact with.
-//  2. Add a Collider (regular, not trigger) to the same GameObject.
-//  3. In onInteract, wire up the action (DialogueManager.StartDialogue etc).
-//  4. Optional: assign pickupPromptUI for a "Press E" indicator.
 
 public class Interactable : MonoBehaviour
 {

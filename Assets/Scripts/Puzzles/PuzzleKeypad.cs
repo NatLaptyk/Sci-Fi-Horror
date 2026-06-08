@@ -7,16 +7,6 @@ using UnityEngine.Events;
 // Each button is a separate GameObject with a KeypadButton script + an Interactable
 // component. The button's Interactable.onInteract fires KeypadButton.Press(), which
 // calls back into this controller via HandleButtonPress(this).
-//
-// Setup:
-//  1. Place 5 buttons in the world (cubes or imported meshes).
-//  2. On each button: add Interactable, Collider, and KeypadButton scripts.
-//  3. On each button's KeypadButton, assign this PuzzleKeypad as the controller.
-//  4. On each button's Interactable, wire onInteract → KeypadButton.Press.
-//  5. On this PuzzleKeypad, drag the buttons into "Correct Sequence" in the order
-//     the player must press them.
-//  6. Wire onSolved to SlidingDoor.Unlock and Open (etc.).
-//  7. Wire onWrongInput to PlayerStats.DrainSanity with a value of 10 (or whatever).
 
 public class PuzzleKeypad : MonoBehaviour
 {

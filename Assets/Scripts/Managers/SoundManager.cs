@@ -9,11 +9,6 @@ using UnityEngine.Audio;
 // - One AudioSource for one-shot stingers (door slams, jump scares, voice lines).
 // - Call PlayAmbient(id) from trigger zones to change music.
 // - Call PlayStinger(id) for one-off sound effects.
-//
-// Setup:
-//  1. Create an empty GameObject named "SoundManager" in your scene.
-//  2. Attach this script. It auto-creates the three AudioSources on Awake.
-//  3. Fill the ambientTracks and stingerClips arrays with your clips.
 
 public class SoundManager : MonoBehaviour
 {

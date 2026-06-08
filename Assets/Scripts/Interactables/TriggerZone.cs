@@ -1,19 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-// The workhorse of your level design. Attach to an empty GameObject
-// with a Collider (any shape) set to "Is Trigger".
-//
-// In the Inspector, hook up UnityEvents to:
-//  - SoundManager (PlayAmbient, PlayStinger)
-//  - Visitor (Appear, SpeakLine, StartWalkingTowardPlayer)
-//  - Doors (open/close)
-//  - Lights (turn off, flicker)
-//  - PerceptionHack (TriggerHack)
-//  - Anything else that reacts to the player entering a zone.
-//
-// This is exactly the pattern from Course 12 slide 6 (Salim's workshop).
-
 [RequireComponent(typeof(Collider))]
 public class TriggerZone : MonoBehaviour
 {

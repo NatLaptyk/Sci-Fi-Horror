@@ -5,15 +5,6 @@ using UnityEngine;
 // then holds it there for a specified duration. Used for scripted cinematic
 // moments where the player must be looking at something specific (like Sophie's
 // head turn).
-//
-// Setup:
-//  1. Attach to any GameObject (it'll find the camera automatically, or assign one).
-//  2. Drag the camera Transform you want to control (usually the Starter Assets
-//     PlayerCameraRoot or MainCamera).
-//  3. From a UnityEvent, call ForceLookAt(target) with the Transform to look at.
-//
-// IMPORTANT: this script directly sets the camera's rotation. While active,
-// player look input should be disabled (e.g. by toggling StarterAssetsInputs.enabled).
 
 public class CameraLookAt : MonoBehaviour
 {

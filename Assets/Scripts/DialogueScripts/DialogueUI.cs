@@ -5,16 +5,6 @@ using UnityEngine.UI;
 using TMPro;
 
 // UI for dialogue. Shows the current speaker's subtitle and three response buttons.
-//
-// Setup:
-//  1. Create a Canvas in your scene (Render Mode: Screen Space - Overlay).
-//  2. Inside the Canvas, create:
-//     - A Panel at the bottom containing a TextMeshProUGUI for the speaker name
-//       and another TextMeshProUGUI for the subtitle text.
-//     - Three Button objects (use TextMeshPro buttons), each with a TextMeshProUGUI label.
-//  3. Attach this script to the Canvas.
-//  4. Drag all the references into the Inspector slots.
-//  5. Assign the Canvas to DialogueManager.dialogueUI.
 
 public class DialogueUI : MonoBehaviour
 {

@@ -3,17 +3,6 @@ using UnityEngine;
 using UnityEngine.Events;
 
 // Sliding door that opens/closes on command.
-//
-// Setup:
-//  1. Model or use a door mesh. Position it CLOSED in the scene.
-//  2. Attach this script.
-//  3. Set slideDirection (e.g. Vector3.right for horizontal, Vector3.up for vertical/up).
-//  4. Set slideDistance to how far the door should move (in meters).
-//  5. To open from a TriggerZone, hook up:
-//     TriggerZone.onPlayerEnter → SlidingDoor.Open
-//
-// The script records the starting position as "closed" and slides to a computed
-// "open" position. Toggle(), Open(), Close() are all callable from UnityEvents.
 
 public class SlidingDoor : MonoBehaviour
 {

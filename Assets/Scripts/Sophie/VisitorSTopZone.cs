@@ -2,13 +2,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 // Trigger zone that fires when a specific GameObject enters (not the player).
-// Use this to stop Sophie when she reaches a certain point during the chase.
-//
-// Setup:
-//  1. Create an empty GameObject in the bedroom between Sophie and the door.
-//  2. Add a Box Collider with Is Trigger CHECKED.
-//  3. Drag Sophie's GameObject into the targetObject field.
-//  4. In onTargetEnter, wire VisitorController.StopMoving (and Disappear if you want).
+// Used to stop Sophie when she reaches a certain point during the chase.
 
 [RequireComponent(typeof(Collider))]
 public class VisitorStopZone : MonoBehaviour

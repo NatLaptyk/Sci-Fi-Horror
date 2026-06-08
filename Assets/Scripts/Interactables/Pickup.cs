@@ -5,10 +5,6 @@ using UnityEngine.InputSystem;
 // Generic pickup. Press E within range to collect. Unity 6 / Input System version.
 //
 // Used for keycards, batteries, any grab-me object.
-// Setup:
-//  1. Attach to any interactable object (e.g. keycard mesh).
-//  2. Add a Collider to the same GameObject (regular, not trigger).
-//  3. In onPickup, wire up what should happen: notify GameManager, add battery, play sound.
 
 public class Pickup : MonoBehaviour
 {
