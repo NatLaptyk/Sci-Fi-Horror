@@ -3,7 +3,6 @@ using TMPro;
 
 // UI panel for an audio log / journal entry. Owns the visuals only —
 // playback timing is driven by AudioLogPlayer.
-
 public class AudioLogUI : MonoBehaviour
 {
     [Header("Panel root")]

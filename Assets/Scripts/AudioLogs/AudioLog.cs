@@ -1,5 +1,7 @@
 using UnityEngine;
 
+// One audio log / journal entry. ScriptableObject asset.
+
 [CreateAssetMenu(fileName = "AudioLog", menuName = "Solaris/Audio Log")]
 public class AudioLog : ScriptableObject
 {
@@ -13,3 +15,4 @@ public class AudioLog : ScriptableObject
     [Tooltip("Full transcript. Letters are revealed proportional to audio progress.")]
     public string transcript;
 }
+

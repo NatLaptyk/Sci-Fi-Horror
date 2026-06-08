@@ -2,6 +2,8 @@ using UnityEngine;
 
 // One line of dialogue. Has a speaker name, the text shown as subtitle,
 // and an optional audio clip. Used inside DialogueNode.
+//
+// This is a [System.Serializable] struct.
 
 [System.Serializable]
 public class DialogueLine

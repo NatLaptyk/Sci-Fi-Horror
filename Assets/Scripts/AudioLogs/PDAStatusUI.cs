@@ -4,8 +4,7 @@ using UnityEngine.UI;
 // Repaints a fixed row of PDA icon Images based on PDAManager state.
 //
 // Each Image in the iconSlots array maps 1:1 to a PDA entry in PDAManager.Entries.
-// Three visual states are applied via color (sprite can be the same for all).
-
+// Three visual states are applied via color.
 public class PDAStatusUI : MonoBehaviour
 {
     [Tooltip("Image components for each PDA slot, in order. Index 0 = first PDA, etc.")]

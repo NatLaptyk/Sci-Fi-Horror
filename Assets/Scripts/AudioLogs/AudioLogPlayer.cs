@@ -50,7 +50,7 @@ public class AudioLogPlayer : MonoBehaviour
         }
         Instance = this;
 
-        if (voiceSource == null) voiceSource = GetComponent<AudioSource>();
+        if (voiceSource == null) TryGetComponent(out voiceSource);
         if (voiceSource == null) voiceSource = gameObject.AddComponent<AudioSource>();
         voiceSource.playOnAwake = false;
         voiceSource.loop = false;

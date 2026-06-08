@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.Events;
-
 public class AudioLogTrigger : MonoBehaviour
 {
     [SerializeField] private AudioLog log;

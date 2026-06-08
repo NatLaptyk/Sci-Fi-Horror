@@ -45,7 +45,7 @@ public class StatVolumeDriver : MonoBehaviour
 
     private void Awake()
     {
-        if (volume == null) volume = GetComponent<Volume>();
+        if (volume == null) TryGetComponent(out volume);
         if (playerStats == null) playerStats = FindFirstObjectByType<PlayerStats>();
 
         if (volume != null) volume.weight = 0f;

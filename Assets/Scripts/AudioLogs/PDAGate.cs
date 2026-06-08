@@ -4,7 +4,6 @@ using UnityEngine.Events;
 
 // Fires an event when ALL of a configurable set of AudioLogs have been Listened
 // (according to PDAManager). Use to gate door unlocks behind narrative progress.
-
 public class PDAGate : MonoBehaviour
 {
     [Header("Gate condition")]
