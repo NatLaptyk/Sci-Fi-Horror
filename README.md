@@ -119,19 +119,6 @@ A keypad next to the airlock has five buttons labeled with scientist names (REYE
 
 ## Setup and how to play
 
-### Editor
-
-1. Clone the repository.
-2. Open the project in Unity 6 (URP).
-3. Open the main level scene from `Assets/Scenes/`.
-4. Press Play in the Editor.
-
-### Build
-
-1. File → Build Profiles → select Windows.
-2. Build to a fresh empty folder (NOT inside the project folder).
-3. Run the resulting `.exe`.
-
 ### Controls
 
 - **WASD**: move
@@ -140,7 +127,7 @@ A keypad next to the airlock has five buttons labeled with scientist names (REYE
 - **Space**: skip dialogue line
 - **Tab**: fast-forward dialogue
 - **E**: interact (pick up PDAs, press keypad buttons, interact with the world)
-- **Esc**: dismiss audio log UI
+- **D**: dismiss audio log UI
 
 ### Goal
 
