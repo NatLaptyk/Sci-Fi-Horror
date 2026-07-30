@@ -198,7 +198,7 @@ Assets/
 ## Credits
 
 **Design and scripting**: Nataliya Laptyk
-**Partner**: Jonathan Reinglas
+**Level, Game, and Narrative Design**: Jonathan Reinglas
 
 **Built on**: Unity 6, URP, Unity Starter Assets (First Person), Cinemachine, TextMeshPro
 **Inspirations**: *Solaris* (Stanisław Lem, 1961), *Solaris* (Andrei Tarkovsky, 1972), *Event Horizon* (1997), *Alien: Isolation* (2014)
